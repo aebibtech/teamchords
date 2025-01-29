@@ -1,4 +1,5 @@
 import { supabase } from "../supabaseClient";
+import { getProfile } from "./common";
 
 async function getChordsheets(orgId) {
     const { data, error } = await supabase
@@ -30,4 +31,31 @@ async function getChordsheet(id) {
     return data;
 }
 
-export { getChordsheets, getChordsheet };
+async function createChordsheet(chordsheet) {    
+    const { data, error } = await supabase
+    .from("chordsheets")
+    .insert({ ...chordsheet });
+
+    if (error) {
+        console.error("Error creating chordsheet:", error);
+        return null;
+    }
+
+    return data;
+}
+
+async function updateChordsheet(id, chordsheet) {
+    const { data, error } = await supabase
+    .from("chordsheets")
+    .update({ ...chordsheet, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+    if (error) {
+        console.error("Error updating chordsheet:", error);
+        return null;
+    }
+
+    return data;
+}
+
+export { getChordsheets, getChordsheet, createChordsheet, updateChordsheet };

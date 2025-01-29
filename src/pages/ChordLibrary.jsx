@@ -3,22 +3,22 @@ import { getProfile } from "../utils/common";
 import { getChordsheets } from "../utils/chordsheets";
 import { UserAuth } from "../context/AuthContext";
 import ChordLibraryTable from "../components/chordlibrary/ChordLibraryTable";
+import { Link, useNavigate } from "react-router-dom";
+import { Plus } from 'lucide-react'
 
 const ChordLibrary = () => {
   const { session } = UserAuth();
+  const navigate = useNavigate();
   const [chordsheets, setChordsheets] = useState([]);
-  // const columns = [
-  //   { data: 'title', title: 'Title', render: (data, type, row) => <Link to={`/library/${row.id}`}>{data}</Link> },
-  //   { data: 'artist', title: 'Artist' },
-  //   { data: 'key', title: 'Key' },
-  // ];
 
   useEffect(() => {
     const fetchData = async () => {
       const profile = await getProfile(session.user.id);
-      console.log(profile);
+      if (!profile) {
+        navigate("/signin");
+        return;
+      }
       const chordsheets = await getChordsheets(profile.orgId);
-      console.log(chordsheets);
       setChordsheets(chordsheets);
     };
     fetchData();
@@ -26,7 +26,13 @@ const ChordLibrary = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-4">Chord Library</h1>
+      <h1 className="w-full flex justify-between mb-4">
+        <p className="text-2xl font-bold">Library</p>
+        <Link to="/library/new" className="border rounded px-2 py-2 bg-gray-500 hover:bg-gray-600 text-white flex items-center gap-2">
+          <Plus size={16} />
+          New Song
+        </Link>
+      </h1>
       {chordsheets && <ChordLibraryTable data={chordsheets} />}
     </>
   );

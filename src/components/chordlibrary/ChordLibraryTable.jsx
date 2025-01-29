@@ -15,7 +15,7 @@ const ChordLibraryTable = ({ data }) => {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-            <Link to={`/library/${row.original.id}`} className="text-blue-500 hover:underline">
+            <Link to={`/library/${row.original.id}`} className="text-gray-500 underline hover:text-gray-600">
               {row.original.title}
             </Link>
         ),

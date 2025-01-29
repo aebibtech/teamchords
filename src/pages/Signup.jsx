@@ -60,7 +60,7 @@ const Signup = () => {
             placeholder="Password"
           />
         </div>
-        <button type="submit" disabled={loading} className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-400">
+        <button type="submit" disabled={loading} className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600">
           Sign Up
         </button>
         {error && <p className="text-red-600 text-center pt-4">{error}</p>}

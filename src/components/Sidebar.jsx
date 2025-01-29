@@ -1,4 +1,4 @@
-import { Menu, X, Home, User, Power, Library, BookAudio } from "lucide-react";
+import { Menu, X, Home, User, Power, Library, BookAudio, LucideFileMusic } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
@@ -23,7 +23,7 @@ const Sidebar = () => {
             className="mb-6 p-2 rounded-md hover:bg-gray-200"
             onClick={() => setIsOpen(!isOpen)}
         >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <span className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-200"><LucideFileMusic size={24} /> <span class="text-gray-700 font-bold">Team Chords</span></span> : <LucideFileMusic size={24} />}
         </button>
 
         <nav className="flex flex-col justify-between h-full">

@@ -1,5 +1,4 @@
 import { supabase } from "../supabaseClient";
-import { getProfile } from "./common";
 
 async function getChordsheets(orgId) {
     const { data, error } = await supabase

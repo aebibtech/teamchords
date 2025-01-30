@@ -1,4 +1,4 @@
-import { User, Power, Library, BookAudio, LucideFileMusic, Guitar } from "lucide-react";
+import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
@@ -13,7 +13,7 @@ const Sidebar = () => {
     try {
       await signOut();
     } catch (err) {
-      setError("An unexpected error occurred."); // Catch unexpected errors
+      setError("An unexpected error occurred.");
     }
   };
 
@@ -29,7 +29,7 @@ const Sidebar = () => {
         <nav className="flex flex-col justify-between h-full">
             <div className="flex flex-col space-y-4">
                 <NavItem to="/library" icon={<Library size={24} />} label="Chord Library" isOpen={isOpen} />
-                <NavItem to="/setlist" icon={<BookAudio size={24} />} label="Set List" isOpen={isOpen} />
+                <NavItem to="/setlists" icon={<BookAudio size={24} />} label="Set Lists" isOpen={isOpen} />
             </div>
             <div className="flex flex-col space-y-4">
                 <hr />

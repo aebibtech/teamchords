@@ -4,9 +4,9 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import PrivateRoute from "./components/PrivateRoute";
 import ChordLibrary from "./pages/ChordLibrary";
-import SetList from "./pages/SetList";
+import SetLists from "./pages/SetLists";
 import ChordProSheet from "./components/chordlibrary/ChordProSheet";
-
+import SetListForm from "./components/setlist/SetListForm";
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/signup", element: <Signup /> },
@@ -28,10 +28,18 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/setlist",
+    path: "/setlists",
     element: (
       <PrivateRoute>
-        <SetList />
+        <SetLists />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/setlists/:id",
+    element: (
+      <PrivateRoute>
+        <SetListForm />
       </PrivateRoute>
     ),
   },

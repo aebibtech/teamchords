@@ -69,7 +69,7 @@ const Signin = () => {
             placeholder="Password"
           />
         </div>
-        <button className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-400">Sign In</button>
+        <button className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600">Sign In</button>
         {error && <p className="text-red-600 text-center pt-4">{error}</p>}
       </form>
     </div>

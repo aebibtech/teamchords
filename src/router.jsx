@@ -5,6 +5,7 @@ import Signin from "./pages/Signin";
 import PrivateRoute from "./components/PrivateRoute";
 import ChordLibrary from "./pages/ChordLibrary";
 import SetList from "./pages/SetList";
+import ChordProSheet from "./components/chordlibrary/ChordProSheet";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -15,6 +16,14 @@ export const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <ChordLibrary />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/library/:id",
+    element: (
+      <PrivateRoute>
+        <ChordProSheet />
       </PrivateRoute>
     ),
   },

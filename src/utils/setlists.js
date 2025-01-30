@@ -33,13 +33,17 @@ async function getSetList(id) {
 async function createSetList(setlist) {    
     const { data, error } = await supabase
     .from("setlists")
-    .insert({ ...setlist });
+    .insert({ ...setlist })
+    .select()
+    .limit(1)
+    .single();
 
     if (error) {
         console.error("Error creating set list:", error);
         return null;
     }
 
+    console.log("Set list created:", data);
     return data;
 }
 
@@ -57,4 +61,28 @@ async function updateSetList(id, setlist) {
     return data;
 }
 
-export { getSetLists, getSetList, createSetList, updateSetList };
+async function deleteSetList(id) {
+    const { error } = await supabase
+    .from("setlists")
+    .delete()
+    .eq("id", id);
+
+    if (error) {
+        console.error("Error deleting set list:", error);
+        return null;
+    }
+
+    return true;
+}
+
+const handleCopyLink = async (id) => {
+    const url = `${window.location.origin}/setlists/share/${id}`;
+    await navigator.clipboard.writeText(url);
+};
+
+const handlePreview = async (id) => {
+    const url = `${window.location.origin}/setlists/share/${id}`;
+    window.open(url, '_blank');
+};
+
+export { getSetLists, getSetList, createSetList, updateSetList, deleteSetList, handleCopyLink, handlePreview };

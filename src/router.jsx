@@ -7,6 +7,8 @@ import ChordLibrary from "./pages/ChordLibrary";
 import SetLists from "./pages/SetLists";
 import ChordProSheet from "./components/chordlibrary/ChordProSheet";
 import SetListForm from "./components/setlist/SetListForm";
+import SetListView from "./pages/SetListView";
+
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/signup", element: <Signup /> },
@@ -42,5 +44,9 @@ export const router = createBrowserRouter([
         <SetListForm />
       </PrivateRoute>
     ),
+  },
+  {
+    path: "/setlists/share/:id",
+    element: <SetListView />,
   },
 ]);

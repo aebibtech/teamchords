@@ -1,5 +1,19 @@
 import { supabase } from "../supabaseClient";
 
+async function getOutputs(setListId) {
+    const { data, error } = await supabase
+    .from("outputs")
+    .select("*,chordsheets(key,content)")
+    .eq("setListId", setListId);
+
+    if (error) {
+        console.error("Error getting outputs:", error);
+        return null;
+    }
+
+    return data;
+}
+
 async function createOutputs(outputs) {    
     const { data, error } = await supabase
     .from("outputs")
@@ -29,4 +43,4 @@ async function deleteOutputs(setListId) {
     return data;
 }
 
-export { createOutputs, deleteOutputs };
+export { createOutputs, deleteOutputs, getOutputs };

@@ -2,3 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.setlist-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 1rem;
+    width: 50vh;
+}
+
+.setlist-view h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.setlist-view table {
+    width: 100%;
+}
+
+.paragraph {
+    margin-bottom: 2rem;
+}
+
+.chord {
+    font-weight: bold;
+}
+
+@media print {
+    h2, footer {
+        display: none;
+    }
+    .setlist-view {
+        box-shadow: none;
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    table {
+        width: 100%;
+    }
+}

@@ -9,34 +9,34 @@ import { Plus, X, Trash, Edit, Link2, Eye } from "lucide-react";
 import { createOutputs, deleteOutputs } from "../../utils/outputs";
 import { handleCopyLink, handlePreview } from "../../utils/setlists";
 import {v4 as uuidv4} from 'uuid';
-
+import { useSongSelection } from "../../context/SongSelectionContext";
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
-    const [song, setSong] = useState("");
-    const [targetKey, setTargetKey] = useState("");
-
-    useEffect(() => {
-        setSong("");
-        setTargetKey("");
-    }, []);
+    const songStuff = useSongSelection();
 
     const handleAdd = () => {
-        onAdd((prevOutputs) => [...prevOutputs, { song, targetKey, index: uuidv4() }]);
-        setSong("");
-        setTargetKey("");
+        onAdd((prevOutputs) => [...prevOutputs, { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, index: uuidv4() }]);
+        songStuff.setSelectedSong({song: "", targetKey: ""});
+        onClose();
+    };
+
+    const handleEdit = () => {
+        onAdd((prevOutputs) => prevOutputs.map((output) => output.index === songStuff.songId ? { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, index: output.index } : output));
+        songStuff.setSelectedSong({song: "", targetKey: ""});
+        songStuff.setIsEdit(false);
         onClose();
     };
 
     return (
         <dialog open={isOpen} className="w-full md:w-1/4 border rounded p-4 shadow-md">
             <label htmlFor="song">Song</label>
-            <select id="song" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={song} onChange={(e) => setSong(e.target.value)}>
+            <select id="song" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.song} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, song: e.target.value}))}>
                 <option value="">Select a song</option>
                 {sheets.map((sheet) => (
                     <option key={sheet.id} value={sheet.id}>{sheet.title}</option>
                 ))}
             </select>
             <label htmlFor="key">Key</label>
-            <select id="key" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={targetKey} onChange={(e) => setTargetKey(e.target.value)}>
+            <select id="key" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.targetKey} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, targetKey: e.target.value}))}>
                 <option value="">Select a key</option>
                 <option value="C">C</option>
                 <option value="C#">C#</option>
@@ -52,9 +52,9 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
                 <option value="B">B</option>
             </select>
             <div className="flex justify-end gap-2">
-                <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={handleAdd} disabled={!song || !targetKey}>
+                <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEdit : handleAdd} disabled={!songStuff.selectedSong.song || !songStuff.selectedSong.targetKey}>
                     <Plus size={16} />
-                    Add
+                    {songStuff.isEdit ? "Update" : "Add"}
                 </button>
                 <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={onClose}>
                     <X size={16} />
@@ -73,6 +73,7 @@ const SetListForm = () => {
     const [sheets, setSheets] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [outputs, setOutputs] = useState([]);
+    const songStuff = useSongSelection();
 
     useEffect(() => {
         const fetchSheets = async () => {
@@ -130,6 +131,13 @@ const SetListForm = () => {
 
     const handleDeleteSong = (index) => {
         setOutputs(outputs.filter((output) => output.index !== index));
+    };
+    
+    const openEditDialog = (index, song) => {
+        setIsOpen(true);
+        songStuff.setIsEdit(true);
+        songStuff.setSongId(index);
+        songStuff.setSelectedSong({song: song.song, targetKey: song.targetKey});
     };
 
     return (
@@ -190,7 +198,7 @@ const SetListForm = () => {
                                     <button className="text-gray-500 hover:text-gray-600 flex items-center gap-2 disabled:opacity-50" onClick={() => handleDeleteSong(output.index)}>
                                         <Trash size={16} />
                                     </button>
-                                    <button className="text-gray-500 hover:text-gray-600 flex items-center gap-2 disabled:opacity-50">
+                                    <button className="text-gray-500 hover:text-gray-600 flex items-center gap-2 disabled:opacity-50" onClick={() => openEditDialog(output.index, output)}>
                                         <Edit size={16} />
                                     </button>
                                 </td>

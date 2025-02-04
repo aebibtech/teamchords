@@ -8,6 +8,7 @@ import SetLists from "./pages/SetLists";
 import ChordProSheet from "./components/chordlibrary/ChordProSheet";
 import SetListForm from "./components/setlist/SetListForm";
 import SetListView from "./pages/SetListView";
+import { SongSelectionContextProvider } from "./context/SongSelectionContext";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -41,7 +42,9 @@ export const router = createBrowserRouter([
     path: "/setlists/:id",
     element: (
       <PrivateRoute>
-        <SetListForm />
+        <SongSelectionContextProvider>
+          <SetListForm />
+        </SongSelectionContextProvider>
       </PrivateRoute>
     ),
   },

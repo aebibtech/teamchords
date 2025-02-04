@@ -6,10 +6,6 @@ export const SongSelectionContextProvider = ({ children }) => {
     const [selectedSong, setSelectedSong] = useState({song: "", targetKey: ""});
     const [songId, setSongId] = useState("");
     const [isEdit, setIsEdit] = useState(false);
-    
-    // useEffect(() => {
-    //     console.log(selectedSong, songId, isEdit, setSelectedSong, setSongId, setIsEdit);
-    // });
 
     return (
         <SongSelectionContext.Provider value={{ selectedSong, setSelectedSong, isEdit, setIsEdit, songId, setSongId }}>

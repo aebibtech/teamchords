@@ -26,6 +26,12 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
         onClose();
     };
 
+    const handleEditClose = () => {
+        songStuff.setSelectedSong({song: "", targetKey: ""});
+        songStuff.setIsEdit(false);
+        onClose();
+    };
+
     return (
         <dialog open={isOpen} className="w-full md:w-1/4 border rounded p-4 shadow-md">
             <label htmlFor="song">Song</label>
@@ -56,7 +62,7 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
                     <Plus size={16} />
                     {songStuff.isEdit ? "Update" : "Add"}
                 </button>
-                <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={onClose}>
+                <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEditClose : onClose}>
                     <X size={16} />
                     Cancel
                 </button>

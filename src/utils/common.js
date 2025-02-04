@@ -9,16 +9,46 @@ async function getProfile(id) {
             name
         )
     `)
-    .eq("userId", id)
+    .eq("userId", id);
+
+    if (error || data.length === 0) {
+        return null;
+    }
+
+    return data[0];
+}
+
+async function createOrganization(profile) {
+    const { data, error } = await supabase.from("organizations").insert({
+        name: profile.name
+    })
+    .select('*')
     .limit(1)
     .single();
 
     if (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error creating organization:", errorOrg);
         return null;
     }
 
     return data;
 }
 
-export { getProfile };
+async function createProfile(profile) {
+    const { data, error } = await supabase
+    .from("profiles")
+    .insert({
+        userId: profile.userId,
+        orgId: profile.orgId
+    })
+    .select('*');
+
+    if (error) {
+        console.error("Error creating profile:", error);
+        return null;
+    }
+
+    return await getProfile(profile.userId);
+}
+
+export { getProfile, createOrganization, createProfile };

@@ -19,7 +19,7 @@ const Signup = () => {
       const result = await signUpNewUser(email, password); // Call context function
 
       if (result.success) {
-        navigate("/dashboard"); // Navigate to dashboard on success
+        navigate("/onboard"); // Navigate to dashboard on success
       } else {
         setError(result.error.message); // Show error message on failure
       }

@@ -8,6 +8,7 @@ import SetLists from "./pages/SetLists";
 import ChordProSheet from "./components/chordlibrary/ChordProSheet";
 import SetListForm from "./components/setlist/SetListForm";
 import SetListView from "./pages/SetListView";
+import Onboarding from "./pages/Onboarding";
 import { SongSelectionContextProvider } from "./context/SongSelectionContext";
 
 export const router = createBrowserRouter([
@@ -51,5 +52,9 @@ export const router = createBrowserRouter([
   {
     path: "/setlists/share/:id",
     element: <SetListView />,
+  },
+  {
+    path: "/onboard",
+    element: <PrivateRoute><Onboarding /></PrivateRoute>,
   },
 ]);

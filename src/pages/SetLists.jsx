@@ -7,15 +7,12 @@ import { getSetLists } from "../utils/setlists";
 import SetListTable from "../components/setlist/SetListTable";
 
 const SetList = () => {
-  const { session } = UserAuth();
-  const navigate = useNavigate();
+  const { profile } = UserAuth();
   const [setLists, setSetLists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const profile = await getProfile(session.user.id);
       if (!profile) {
-        navigate("/signin");
         return;
       }
       const setLists = await getSetLists(profile.orgId);

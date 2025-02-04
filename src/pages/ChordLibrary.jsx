@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../utils/common";
 import { getChordsheets } from "../utils/chordsheets";
 import { UserAuth } from "../context/AuthContext";
 import ChordLibraryTable from "../components/chordlibrary/ChordLibraryTable";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Plus } from 'lucide-react'
 
 const ChordLibrary = () => {
-  const { session } = UserAuth();
-  const navigate = useNavigate();
+  const { profile } = UserAuth();
   const [chordsheets, setChordsheets] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const profile = await getProfile(session.user.id);
       if (!profile) {
-        navigate("/signin");
         return;
       }
       const chordsheets = await getChordsheets(profile.orgId);

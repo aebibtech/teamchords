@@ -72,7 +72,7 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
 };
 
 const SetListForm = () => {
-    const { profile } = UserAuth();
+    const { session } = UserAuth();
     const { id } = useParams();
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -83,10 +83,7 @@ const SetListForm = () => {
 
     useEffect(() => {
         const fetchSheets = async () => {
-            if (!profile) {
-                return;
-            }
-
+            const profile = await getProfile(session.user.id);
             const data = await getChordsheets(profile.orgId);
             setSheets(data);
         };
@@ -109,9 +106,7 @@ const SetListForm = () => {
     const handleSave = async () => {
         const setlist = { name };
         if (id === 'new') {
-            if (!profile) {
-                return;
-            }
+            const profile = await getProfile(session.user.id);
             setlist.orgId = profile.orgId;
 
             const newSetList = await createSetList(setlist);

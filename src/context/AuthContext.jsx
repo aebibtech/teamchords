@@ -1,12 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [session, setSession] = useState(undefined);
-  const [profile, setProfile] = useState(undefined);
 
   // Sign up
   const signUpNewUser = async (email, password) => {
@@ -68,13 +66,9 @@ export const AuthContextProvider = ({ children }) => {
     setProfile(undefined);
   }
 
-  const setUserProfile = (profile) => {
-    setProfile(profile);
-  }
-
   return (
     <AuthContext.Provider
-      value={{ signUpNewUser, signInUser, session, signOut, profile, setUserProfile }}
+      value={{ signUpNewUser, signInUser, session, signOut }}
     >
       {children}
     </AuthContext.Provider>

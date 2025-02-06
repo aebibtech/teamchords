@@ -5,12 +5,14 @@ import "./index.css";
 import { router } from "./router.jsx";
 import { RouterProvider } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
-
+import { ProfileContextProvider } from "./context/ProfileContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <>
       <AuthContextProvider>
-        <RouterProvider router={router} />
+        <ProfileContextProvider>
+          <RouterProvider router={router} />
+        </ProfileContextProvider>
       </AuthContextProvider>
     </>
   </StrictMode>

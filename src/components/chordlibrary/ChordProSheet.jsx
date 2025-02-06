@@ -7,7 +7,7 @@ import { UserAuth } from "../../context/AuthContext";
 import { getProfile } from "../../utils/common";
 
 const ChordProSheet = () => {
-    const { profile } = UserAuth();
+    const { session } = UserAuth();
     const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
@@ -46,10 +46,7 @@ const ChordProSheet = () => {
     const handleSave = async () => {
         const chordsheet = { title, artist, key, content };
         if (id === 'new') {
-            if (!profile) {
-                console.error("Profile not found");
-                return;
-            }
+            const profile = await getProfile(session.user.id);
             chordsheet.orgId = profile.orgId;
 
             await createChordsheet(chordsheet);

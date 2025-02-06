@@ -4,7 +4,8 @@ async function getChordsheets(orgId) {
     const { data, error } = await supabase
     .from("chordsheets")
     .select('*')
-    .eq("orgId", orgId);
+    .eq("orgId", orgId)
+    .order('artist', { ascending: true });
 
     if (error) {
         console.error("Error fetching chordsheets:", error);

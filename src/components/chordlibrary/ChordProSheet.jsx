@@ -32,6 +32,7 @@ const ChordProSheet = () => {
         try {
             if (chordProContent) {
                 const parser = new ChordSheetJS.ChordProParser();
+                chordProContent = chordProContent.replaceAll('{ci:', '{c:');
                 const song = parser.parse(chordProContent);
                 const formatter = new ChordSheetJS.HtmlTableFormatter();
                 return formatter.format(song);

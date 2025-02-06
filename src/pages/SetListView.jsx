@@ -5,6 +5,7 @@ import { getSetList } from "../utils/setlists";
 import ChordSheetJS from "chordsheetjs";
 import { Key } from "chordsheetjs";
 import { Guitar } from "lucide-react";
+import { supabase } from "../supabaseClient";
 
 const SetListView = () => {
     const { id } = useParams();
@@ -14,17 +15,27 @@ const SetListView = () => {
 
     useEffect(() => {
         const fetchSet = async () => {
-            const setlist = await getSetList(id);
-            const outputs = await getOutputs(id);
+            const setlistData = await getSetList(id);
+            const outputData = await getOutputs(id);
 
-            if (outputs.length === 0) {
+            if (outputData.length === 0) {
                 navigate(`/setlists/${id}`);
             }
             
-            setSetlist(setlist);
-            setOutputs(outputs);
+            setSetlist(setlistData);
+            setOutputs(outputData);
         };
         fetchSet();
+        
+        const channels = supabase.channel('custom-filter-channel')
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'setlists', filter: `id=eq.${id}` },
+            (payload) => {
+                fetchSet();
+            }
+        )
+        .subscribe();
     }, [id]);
     
 

@@ -10,6 +10,7 @@ import { createOutputs, deleteOutputs } from "../../utils/outputs";
 import { handleCopyLink, handlePreview } from "../../utils/setlists";
 import {v4 as uuidv4} from 'uuid';
 import { useSongSelection } from "../../context/SongSelectionContext";
+
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     const songStuff = useSongSelection();
 
@@ -38,7 +39,7 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
             <select id="song" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.song} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, song: e.target.value}))}>
                 <option value="">Select a song</option>
                 {sheets.map((sheet) => (
-                    <option key={sheet.id} value={sheet.id}>{sheet.title}</option>
+                    <option key={sheet.id} value={sheet.id}>{sheet.title} - {sheet.artist} - {sheet.key}</option>
                 ))}
             </select>
             <label htmlFor="key">Key</label>

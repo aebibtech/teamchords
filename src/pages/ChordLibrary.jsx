@@ -7,6 +7,7 @@ import { Plus, Upload } from 'lucide-react';
 import { getProfile } from "../utils/common";
 import { UserAuth } from "../context/AuthContext";
 import { supabase } from "../supabaseClient";
+import { useProfile } from "../context/ProfileContext";
 
 const ChordLibrary = () => {
   const [chordsheets, setChordsheets] = useState([]);

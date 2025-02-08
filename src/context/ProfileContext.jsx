@@ -5,18 +5,13 @@ import { supabase } from "../supabaseClient";
 const ProfileContext = createContext();
 
 export const ProfileContextProvider = ({ children }) => {
-  const [profile, setProfile] = useState(undefined);
+  const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      const data = await getProfile(user.id);
-      setProfile(data);
-    };
-    fetchProfile();
-  }, []);
+  const setUserProfile = (user) => {
+    setProfile(user);
+  }
 
-  return <ProfileContext.Provider value={{ profile }}><Suspense fallback={<div>Loading...</div>}>{children}</Suspense></ProfileContext.Provider>;
+  return <ProfileContext.Provider value={{ profile, setUserProfile }}><Suspense fallback={<div>Loading...</div>}>{children}</Suspense></ProfileContext.Provider>;
 };
 
 export const useProfile = () => {

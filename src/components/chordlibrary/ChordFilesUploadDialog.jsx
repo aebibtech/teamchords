@@ -2,13 +2,13 @@ import { useState, useRef } from "react";
 import { X } from "lucide-react";
 import ChordSheetJS from "chordsheetjs";
 import { createChordsheet } from "../../utils/chordsheets";
-import { useProfile } from "../../context/ProfileContext";
+import { UserProfile } from "../../context/ProfileContext";
 
 const ChordFilesUploadDialog = ({ isOpen, close }) => {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const inputRef = useRef(null);
-  const { profile } = useProfile();
+  const { profile } = UserProfile();
 
   const handleFileChange = (e) => {
     setFiles(e.target.files);

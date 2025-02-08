@@ -31,8 +31,8 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSignUp} className="max-w-md m-auto mt-24 p-12 border rounded bg-gray-100  ">
+    <div className="bg-gray-700 w-screen h-screen flex">
+      <form onSubmit={handleSignUp} className="max-w-md m-auto mt-24 p-12 border rounded bg-gray-100">
         <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
         <h2 className="font-bold pb-2">Sign up today!</h2>
         <p>

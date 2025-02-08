@@ -10,6 +10,7 @@ import SetListForm from "./components/setlist/SetListForm";
 import SetListView from "./pages/SetListView";
 import Onboarding from "./pages/Onboarding";
 import { SongSelectionContextProvider } from "./context/SongSelectionContext";
+import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -56,5 +57,9 @@ export const router = createBrowserRouter([
   {
     path: "/onboard",
     element: <PrivateRoute><Onboarding /></PrivateRoute>,
+  },
+  {
+    path: "/profile",
+    element: <PrivateRoute><Profile /></PrivateRoute>,
   },
 ]);

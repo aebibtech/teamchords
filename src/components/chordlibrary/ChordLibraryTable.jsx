@@ -15,9 +15,12 @@ const ChordLibraryTable = ({ data }) => {
         accessorKey: "title",
         header: "Title",
         cell: ({ row }) => (
-            <Link to={`/library/${row.original.id}`} className="text-gray-500 underline hover:text-gray-600">
-              {row.original.title}
-            </Link>
+          <Link
+            to={`/library/${row.original.id}`}
+            className="text-gray-500 underline hover:text-gray-600"
+          >
+            {row.original.title}
+          </Link>
         ),
       },
       {
@@ -42,37 +45,42 @@ const ChordLibraryTable = ({ data }) => {
 
   return (
     <div className="h-[90vh] overflow-y-auto">
-      <table className="w-full border border-gray-300 bg-white rounded-lg">
-        <thead className="bg-gray-200">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="border-b border-gray-300 p-3 text-left text-gray-700 font-medium cursor-pointer hover:bg-gray-300"
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row, index) => (
-            <tr key={row.id} className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-3 text-gray-800">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Enable horizontal scrolling on small screens */}
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[600px] border border-gray-300 bg-white rounded-lg">
+          <thead className="bg-gray-200 sticky top-0 z-10">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="border-b border-gray-300 p-3 text-left text-gray-700 font-medium cursor-pointer hover:bg-gray-300"
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, index) => (
+              <tr
+                key={row.id}
+                className={`border-b border-gray-200 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="p-3 text-gray-800">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
 export default ChordLibraryTable;
-    

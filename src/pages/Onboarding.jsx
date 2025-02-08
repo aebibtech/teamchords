@@ -2,11 +2,11 @@ import { UserAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { createProfile, createOrganization } from "../utils/common";
-import { useProfile } from "../context/ProfileContext";
+import { UserProfile } from "../context/ProfileContext";
 
 const Onboarding = () => {
   const { session } = UserAuth();
-  const { profile, setUserProfile } = useProfile();
+  const { profile, setUserProfile } = UserProfile();
   const navigate = useNavigate();
   const [orgName, setOrgName] = useState("");
   const inputRef = useRef(null);

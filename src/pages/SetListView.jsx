@@ -21,11 +21,6 @@ const SetListView = () => {
             setSetlist(setlistData);
             setOutputs(outputData);
             document.title = `Team Chords - ${setlistData.name}`;
-            document.querySelectorAll('.sheet h1').forEach((element) => {
-                element.style.fontWeight = 'bold';
-                element.style.textAlign = 'center';
-                element.style.fontSize = '1.5rem';
-            });
         };
         fetchSet();
         
@@ -39,6 +34,16 @@ const SetListView = () => {
         )
         .subscribe();
     }, [id]);
+
+    useEffect(() => {
+        if (outputs.length > 0) {
+            document.querySelectorAll('.sheet h1').forEach((element) => {
+                element.style.fontWeight = 'bold';
+                element.style.textAlign = 'center';
+                element.style.fontSize = '1.5rem';
+            });
+        }
+    }, [outputs]);
     
 
     const renderChordPro = (chordProContent, originalKey, targetKey) => {
@@ -63,7 +68,7 @@ const SetListView = () => {
   
     return (
         <div className="bg-gray-100">
-            {setlist && <h2 className="text-center text-2xl font-bold sticky top-0 left-0 z-10 w-full bg-white py-4 shadow-md">{setlist.name}</h2>}
+            {setlist && <h2 className="text-center text-2xl font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md">{setlist.name}</h2>}
             <div className="flex flex-col items-center">
                 {outputs.map((output) => <div key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey) }} className="sheet mt-4 bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full border border-gray-200" />)}
             </div>

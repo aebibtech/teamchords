@@ -14,6 +14,6 @@ export const ProfileContextProvider = ({ children }) => {
   return <ProfileContext.Provider value={{ profile, setUserProfile }}><Suspense fallback={<div>Loading...</div>}>{children}</Suspense></ProfileContext.Provider>;
 };
 
-export const useProfile = () => {
+export const UserProfile = () => {
   return useContext(ProfileContext);
 };

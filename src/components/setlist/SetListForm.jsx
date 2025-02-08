@@ -34,7 +34,7 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     };
 
     return (
-        <dialog open={isOpen} className="w-full md:w-1/4 border rounded p-4 shadow-md">
+        <dialog open={isOpen} className="w-full sm:w-3/4 md:w-1/2 lg:w-1/4 border rounded p-4 shadow-md z-10">
             <label htmlFor="song">Song</label>
             <select id="song" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.song} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, song: e.target.value}))}>
                 <option value="">Select a song</option>
@@ -139,7 +139,7 @@ const SetListForm = () => {
     };
 
     return (
-        <div className="p-4">
+        <>
             <SongSelectionDialog sheets={sheets} onAdd={setOutputs} isOpen={isOpen} onClose={() => setIsOpen(false)} />
             <div className="mb-4">
                 <label htmlFor="name">Set List Name</label>
@@ -152,26 +152,39 @@ const SetListForm = () => {
                     placeholder="Set List Name"
                 />
             </div>
-            <div className="flex justify-between">
-                <div className="flex gap-2">
-                    <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={!name}>
+            <div className="flex flex-col lg:flex-row justify-between gap-4">
+                <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
+                    <button 
+                        onClick={handleSave} 
+                        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" 
+                        disabled={!name}
+                    >
                         <Save size={16} /> 
                         Save
                     </button>
-                    <button onClick={() => setIsOpen(true)} className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex items-center gap-2 disabled:opacity-50">
+                    <button 
+                        onClick={() => setIsOpen(true)} 
+                        className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex items-center gap-2 disabled:opacity-50"
+                    >
                         <Plus size={16} />
                         Add Song
                     </button>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
                     {id !== 'new' && (
-                        <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50">
+                        <button 
+                            onClick={() => handleCopyLink(id)} 
+                            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50"
+                        >
                             <Link2 size={16} /> 
                             Copy Link
                         </button>
                     )}
                     {id !== 'new' && (
-                        <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50">
+                        <button 
+                            onClick={() => handlePreview(id)} 
+                            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50"
+                        >
                             <Eye size={16} /> 
                             Preview
                         </button>
@@ -205,7 +218,7 @@ const SetListForm = () => {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </>
     );
 };
 

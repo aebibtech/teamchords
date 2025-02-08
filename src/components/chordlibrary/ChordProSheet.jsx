@@ -5,6 +5,7 @@ import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
 import { UserAuth } from "../../context/AuthContext";
 import { getProfile } from "../../utils/common";
+import Editor from "@monaco-editor/react";
 
 const ChordProSheet = () => {
     const { session } = UserAuth();
@@ -26,7 +27,7 @@ const ChordProSheet = () => {
             };
             fetchChordsheet();
         }
-    }, []);
+    }, [id]);
 
     const renderChordPro = (chordProContent) => {
         try {
@@ -59,9 +60,9 @@ const ChordProSheet = () => {
     };
 
     return (
-        <div className="p-4">
+        <>
             <div className="mb-4">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title" className="block font-semibold">Title</label>
                 <input 
                     id="title"
                     type="text" 
@@ -70,7 +71,7 @@ const ChordProSheet = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Title"
                 />
-                <label htmlFor="artist">Artist</label>
+                <label htmlFor="artist" className="block font-semibold mt-2">Artist</label>
                 <input 
                     id="artist"
                     type="text" 
@@ -79,38 +80,42 @@ const ChordProSheet = () => {
                     onChange={(e) => setArtist(e.target.value)}
                     placeholder="Artist"
                 />
-                <label htmlFor="key">Key</label>
-                <select id="key" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={key} onChange={(e) => setKey(e.target.value)}>
-                    <option value="C">C</option>
-                    <option value="C#">C#</option>
-                    <option value="D">D</option>
-                    <option value="D#">D#</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="F#">F#</option>
-                    <option value="G">G</option>
-                    <option value="G#">G#</option>
-                    <option value="A">A</option>
-                    <option value="A#">A#</option>
-                    <option value="B">B</option>
+                <label htmlFor="key" className="block font-semibold mt-2">Key</label>
+                <select 
+                    id="key" 
+                    className="w-full p-2 border rounded text-lg mt-2 mb-4" 
+                    value={key} 
+                    onChange={(e) => setKey(e.target.value)}
+                >
+                    {"C C# D D# E F F# G G# A A# B".split(" ").map((note) => (
+                        <option key={note} value={note}>{note}</option>
+                    ))}
                 </select>
             </div>
-            <div className="flex gap-4">
-                <textarea 
-                    className="w-1/2 p-2 border rounded h-[68vh] overflow-auto" 
-                    value={content} 
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="Your ChordPro sheet here..."
-                />
-                <div className="w-1/2 p-4 border border-gray-300 rounded h-[68vh] overflow-auto bg-gray-50 shadow-inner text-gray-800 text-sm whitespace-pre-wrap"
+            <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[64vh]">
+                <div className="flex-1 min-h-[240px] h-auto lg:h-[64vh] border rounded overflow-hidden">
+                    <Editor 
+                        height="64vh"
+                        defaultLanguage="plaintext"
+                        value={content}
+                        onChange={(value) => setContent(value)}
+                        options={{ minimap: { enabled: false }, wordWrap: "on" }}
+                    />
+                </div>
+                <div 
+                    className="flex-1 min-h-[240px] h-auto lg:h-[64vh] p-4 border border-gray-300 rounded overflow-auto bg-gray-50 shadow-inner text-gray-800 text-sm whitespace-pre-wrap"
                     dangerouslySetInnerHTML={{ __html: renderChordPro(content) }}
                 />
             </div>
-            <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={!title || !artist || !key || !content}>
+            <button 
+                onClick={handleSave} 
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" 
+                disabled={!title || !artist || !key || !content}
+            >
                 <Save size={16} /> 
                 Save
             </button>
-        </div>
+        </>
     );
 };
 

@@ -1,10 +1,11 @@
 import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
-import { useProfile } from "../context/ProfileContext";
+import { UserProfile } from "../context/ProfileContext";
+
 const Sidebar = () => {
-  const { setUserProfile } = useProfile();
+  const { setUserProfile } = UserProfile();
   const [isOpen, setIsOpen] = useState(false);
   const { signOut, session } = UserAuth();
   const navigate = useNavigate();
@@ -21,15 +22,25 @@ const Sidebar = () => {
     }
   };
 
-  return (
-    <div className={`${ isOpen ? "w-64" : "w-20" } bg-white shadow-md h-full flex flex-col p-4 transition-all duration-300 ease-in-out`}>
-        <button
-            className="mb-6 p-2 rounded-md hover:bg-gray-200"
-            onClick={() => setIsOpen(!isOpen)}
-        >
-            {isOpen ? <span className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-200"><Guitar size={24} /> <span className="text-gray-700 font-bold">Team Chords</span></span> : <Guitar size={24} />}
-        </button>
+  const handleSidebarToggle = () => {
+    if (document.body.clientWidth >= 720) {
+      setIsOpen(!isOpen);
+    }
+    else {
+      setIsOpen(false);
+    }
+  };
 
+  return (
+    <div className={`${ isOpen ? "w-64" : "w-20" } bg-gray-700 text-white h-screen flex flex-col p-4 transition-all duration-300 ease-in-out`}>
+        <button
+            className="p-2 rounded-md hover:bg-gray-500"
+            onClick={handleSidebarToggle}
+            title="Toggle Sidebar"
+        >
+            {isOpen ? <span className="flex items-center space-x-4 p-2 cursor-pointer"><Guitar size={24} /> <span className="font-bold">Team Chords</span></span> : <Guitar size={24} />}
+        </button>
+        <hr className="my-4" />
         <nav className="flex flex-col justify-between h-full">
             <div className="flex flex-col space-y-4">
                 <NavItem to="/library" icon={<Library size={24} />} label="Chord Library" isOpen={isOpen} />
@@ -37,7 +48,7 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-col space-y-4">
                 <hr />
-                <NavItem onClick={e => e.preventDefault()} icon={<User size={24} />} label={session?.user?.email} isOpen={isOpen} />
+                <NavItem to="/profile" icon={<User size={24} />} label={session?.user?.email} isOpen={isOpen} />
                 <NavItem onClick={handleSignOut} icon={<Power size={24} />} label="Sign out" isOpen={isOpen} />
             </div>
         </nav>
@@ -50,10 +61,11 @@ function NavItem({ to, icon, label, isOpen, onClick }) {
       return (
         <Link
           to={to}
-        className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-200"
-      >
-        {icon}
-          {isOpen && <span className="text-gray-700">{label}</span>}
+          className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-500"
+          title={label}
+        >
+          {icon}
+          {isOpen && <span>{label}</span>}
         </Link>
       );
     }
@@ -61,10 +73,11 @@ function NavItem({ to, icon, label, isOpen, onClick }) {
     return (
       <button
         onClick={onClick}
-        className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-200"
+        className="flex items-center space-x-4 p-2 rounded-md cursor-pointer hover:bg-gray-500"
+        title={label}
       >
         {icon}
-        {isOpen && <span className="text-gray-700">{label}</span>}
+        {isOpen && <span>{label}</span>}
       </button>
     );
   }

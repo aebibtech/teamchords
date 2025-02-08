@@ -1,19 +1,23 @@
 import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
-
+import { useProfile } from "../context/ProfileContext";
 const Sidebar = () => {
+  const { setUserProfile } = useProfile();
   const [isOpen, setIsOpen] = useState(false);
   const { signOut, session } = UserAuth();
+  const navigate = useNavigate();
 
   const handleSignOut = async (e) => {
     e.preventDefault();
 
     try {
       await signOut();
+      setUserProfile(null);
+      navigate("/signin");
     } catch (err) {
-      setError("An unexpected error occurred.");
+      console.error(err);
     }
   };
 

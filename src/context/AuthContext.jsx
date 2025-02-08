@@ -63,7 +63,6 @@ export const AuthContextProvider = ({ children }) => {
     if (error) {
       console.error("Error signing out:", error);
     }
-    setProfile(undefined);
   }
 
   return (

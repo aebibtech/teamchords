@@ -1,17 +1,21 @@
 import { UserAuth } from "../context/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 import { createProfile, createOrganization } from "../utils/common";
+import { useProfile } from "../context/ProfileContext";
 
 const Onboarding = () => {
-  const { session, profile, setUserProfile } = UserAuth();
+  const { session } = UserAuth();
+  const { profile, setUserProfile } = useProfile();
   const navigate = useNavigate();
   const [orgName, setOrgName] = useState("");
   const inputRef = useRef(null);
-  
-  if (profile) {
-    return <Navigate to="/library" />;
-  }
+
+  useEffect(() => {
+    if (profile) {
+      navigate("/library");
+    }
+  }, [profile]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +36,6 @@ const Onboarding = () => {
     const data = await createProfile(newProfile);
     if (data) {
       setUserProfile(data);
-      navigate("/library");
     }
     setOrgName((p) => data ? "" : p);
     inputRef.current.value = data ? "" : orgName;

@@ -5,6 +5,7 @@ import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
 import { UserProfile } from "../../context/ProfileContext";
 import Editor from "@monaco-editor/react";
+import { defaultContent, defaultKey } from "../../constants";
 
 const ChordProSheet = () => {
     const { profile } = UserProfile();
@@ -12,8 +13,8 @@ const ChordProSheet = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [artist, setArtist] = useState("");
-    const [key, setKey] = useState("C");
-    const [content, setContent] = useState("");
+    const [key, setKey] = useState(defaultKey);
+    const [content, setContent] = useState(defaultContent);
 
     useEffect(() => {
         if (id !== 'new') {

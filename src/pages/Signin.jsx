@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import { UserProfile } from "../context/ProfileContext";
+import { getProfile } from "../utils/common";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -9,33 +11,46 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
 
   const { signInUser, session } = UserAuth();
+  const { setUserProfile } = UserProfile();
   const navigate = useNavigate();
+
+  const fetchProfile = async (data) => {
+    const profile = await getProfile(data?.user?.id);
+    if (profile) {
+      setUserProfile(profile);
+      setLoading(false);
+      navigate("/library");
+    }
+    else {
+      setError("Unable to get profile.");
+      setLoading(false);
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     if (session) {
-      navigate("/library");
+      fetchProfile(session);
     }
-  }, [session]);
+  }, []);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const { session, error } = await signInUser(email, password); // Use your signIn function
+    setLoading(true);
+    const { data, error } = await signInUser(email, password); // Use your signIn function
 
     if (error) {
       setError(error); // Set the error message if sign-in fails
-
+      setLoading(false);
       // Set a timeout to clear the error message after a specific duration (e.g., 3 seconds)
       setTimeout(() => {
         setError("");
       }, 3000); // 3000 milliseconds = 3 seconds
     } else {
       // Redirect or perform any necessary actions after successful sign-in
-      navigate("/library");
-    }
-
-    if (session) {
-      closeModal();
-      setError(""); // Reset the error when there's a session
+      await fetchProfile(data);
     }
   };
 
@@ -48,7 +63,6 @@ const Signin = () => {
           Don't have an account yet? <Link className="text-blue-500" to="/signup">Sign up</Link>
         </p>
         <div className="flex flex-col py-4">
-          {/* <label htmlFor="Email">Email</label> */}
           <input
             onChange={(e) => setEmail(e.target.value)}
             className="p-3 mt-2 border rounded"
@@ -59,7 +73,6 @@ const Signin = () => {
           />
         </div>
         <div className="flex flex-col py-4">
-          {/* <label htmlFor="Password">Password</label> */}
           <input
             onChange={(e) => setPassword(e.target.value)}
             className="p-3 mt-2 border rounded"
@@ -69,7 +82,7 @@ const Signin = () => {
             placeholder="Password"
           />
         </div>
-        <button className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600">Sign In</button>
+        <button className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600 disabled:opacity-50" disabled={loading}>Sign In</button>
         {error && <p className="text-red-600 text-center pt-4">{error}</p>}
       </form>
     </div>

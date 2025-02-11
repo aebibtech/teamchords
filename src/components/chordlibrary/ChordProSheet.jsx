@@ -3,12 +3,11 @@ import { getChordsheet, createChordsheet, updateChordsheet } from "../../utils/c
 import { useState, useEffect } from "react";
 import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
-import { UserAuth } from "../../context/AuthContext";
-import { getProfile } from "../../utils/common";
+import { UserProfile } from "../../context/ProfileContext";
 import Editor from "@monaco-editor/react";
 
 const ChordProSheet = () => {
-    const { session } = UserAuth();
+    const { profile } = UserProfile();
     const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
@@ -48,7 +47,6 @@ const ChordProSheet = () => {
     const handleSave = async () => {
         const chordsheet = { title, artist, key, content };
         if (id === 'new') {
-            const profile = await getProfile(session.user.id);
             chordsheet.orgId = profile.orgId;
 
             await createChordsheet(chordsheet);

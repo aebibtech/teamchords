@@ -1,6 +1,4 @@
-import { createContext, useContext, useState, useEffect, Suspense } from "react";
-import { getProfile } from "../utils/common";
-import { supabase } from "../supabaseClient";
+import { createContext, useContext, useState } from "react";
 
 const ProfileContext = createContext();
 
@@ -11,7 +9,7 @@ export const ProfileContextProvider = ({ children }) => {
     setProfile(user);
   }
 
-  return <ProfileContext.Provider value={{ profile, setUserProfile }}><Suspense fallback={<div>Loading...</div>}>{children}</Suspense></ProfileContext.Provider>;
+  return <ProfileContext.Provider value={{ profile, setUserProfile }}>{children}</ProfileContext.Provider>;
 };
 
 export const UserProfile = () => {

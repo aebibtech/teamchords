@@ -4,19 +4,16 @@ import ChordLibraryTable from "../components/chordlibrary/ChordLibraryTable";
 import ChordFilesUploadDialog from "../components/chordlibrary/ChordFilesUploadDialog";
 import { Link } from "react-router-dom";
 import { Plus, Upload } from 'lucide-react';
-import { getProfile } from "../utils/common";
-import { UserAuth } from "../context/AuthContext";
 import { supabase } from "../supabaseClient";
 import { UserProfile } from "../context/ProfileContext";
 
 const ChordLibrary = () => {
   const [chordsheets, setChordsheets] = useState([]);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
-  const { session } = UserAuth();
+  const { profile } = UserProfile();
 
   useEffect(() => {
     const fetchData = async () => {
-      const profile = await getProfile(session.user.id);
       const chordsheets = await getChordsheets(profile.orgId);
       setChordsheets(chordsheets);
     };

@@ -22,11 +22,7 @@ const Signin = () => {
       navigate("/library");
     }
     else {
-      setError("Unable to get profile.");
-      setLoading(false);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      navigate("/onboard");
     }
   };
 
@@ -56,7 +52,7 @@ const Signin = () => {
 
   return (
     <div className="bg-gray-700 w-screen h-screen flex">
-      <form onSubmit={handleSignIn} className="max-w-md m-auto mt-24 p-12 border rounded bg-gray-100">
+      <form onSubmit={handleSignIn} className="m-auto mt-24 p-12 border rounded bg-gray-100">
         <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
         <h2 className="font-bold pb-2">Sign in</h2>
         <p>

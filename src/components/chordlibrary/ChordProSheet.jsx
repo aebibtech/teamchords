@@ -5,7 +5,7 @@ import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
 import { UserProfile } from "../../context/ProfileContext";
 import Editor from "@monaco-editor/react";
-import { defaultContent, defaultKey } from "../../constants";
+import { defaultContent, defaultKey, chordProGuideURL } from "../../constants";
 
 const ChordProSheet = () => {
     const { profile } = UserProfile();
@@ -91,6 +91,7 @@ const ChordProSheet = () => {
                     ))}
                 </select>
             </div>
+            <a className="text-blue-500 block mb-2 hover:underline" href={chordProGuideURL} target="_blank">ChordPro Syntax Guide</a>
             <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[64vh]">
                 <div className="flex-1 min-h-[240px] h-auto lg:h-[64vh] border rounded overflow-hidden">
                     <Editor 

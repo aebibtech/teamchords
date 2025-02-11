@@ -106,7 +106,6 @@ const SetListForm = () => {
     const handleSave = async () => {
         const setlist = { name };
         if (id === 'new') {
-            const profile = await getProfile(session.user.id);
             setlist.orgId = profile.orgId;
 
             const newSetList = await createSetList(setlist);

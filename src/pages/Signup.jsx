@@ -32,14 +32,13 @@ const Signup = () => {
 
   return (
     <div className="bg-gray-700 w-screen h-screen flex">
-      <form onSubmit={handleSignUp} className="max-w-md m-auto mt-24 p-12 border rounded bg-gray-100">
+      <form onSubmit={handleSignUp} className="m-auto mt-24 p-12 border rounded bg-gray-100">
         <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
         <h2 className="font-bold pb-2">Sign up today!</h2>
         <p>
           Already have an account? <Link className="text-blue-500" to="/signin">Sign in</Link>
         </p>
         <div className="flex flex-col py-4">
-          {/* <label htmlFor="Email">Email</label> */}
           <input
             onChange={(e) => setEmail(e.target.value)}
             className="p-3 mt-2 border rounded"
@@ -50,7 +49,6 @@ const Signup = () => {
           />
         </div>
         <div className="flex flex-col py-4">
-          {/* <label htmlFor="Password">Password</label> */}
           <input
             onChange={(e) => setPassword(e.target.value)}
             className="p-3 mt-2 border rounded"
@@ -60,7 +58,7 @@ const Signup = () => {
             placeholder="Password"
           />
         </div>
-        <button type="submit" disabled={loading} className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600">
+        <button type="submit" disabled={loading} className="w-full mt-4 border rounded bg-gray-500 p-2 text-white hover:bg-gray-600 disabled:opacity-50">
           Sign Up
         </button>
         {error && <p className="text-red-600 text-center pt-4">{error}</p>}

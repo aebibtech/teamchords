@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../utils/common";
-import { UserAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { UserProfile } from "../context/ProfileContext";
+import { Link } from "react-router-dom";
 import { Plus } from 'lucide-react'
 import { getSetLists } from "../utils/setlists";
 import SetListTable from "../components/setlist/SetListTable";
 
 const SetList = () => {
-  const { session } = UserAuth();
+  const { profile } = UserProfile();
   const [setLists, setSetLists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const profile = await getProfile(session.user.id);
       const setLists = await getSetLists(profile.orgId);
       setSetLists(setLists);
     };

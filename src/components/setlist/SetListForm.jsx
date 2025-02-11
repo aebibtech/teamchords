@@ -2,14 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getSetList, createSetList, updateSetList } from "../../utils/setlists";
 import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
-import { UserAuth } from "../../context/AuthContext";
 import { getProfile } from "../../utils/common";
 import { getChordsheets } from "../../utils/chordsheets";
 import { Plus, X, Trash, Edit, Link2, Eye } from "lucide-react";
 import { createOutputs, deleteOutputs } from "../../utils/outputs";
 import { handleCopyLink, handlePreview } from "../../utils/setlists";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { useSongSelection } from "../../context/SongSelectionContext";
+import { UserProfile } from "../../context/ProfileContext";
 
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     const songStuff = useSongSelection();
@@ -73,7 +73,7 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
 };
 
 const SetListForm = () => {
-    const { session } = UserAuth();
+    const { profile } = UserProfile();
     const { id } = useParams();
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -84,7 +84,6 @@ const SetListForm = () => {
 
     useEffect(() => {
         const fetchSheets = async () => {
-            const profile = await getProfile(session.user.id);
             const data = await getChordsheets(profile.orgId);
             setSheets(data);
         };

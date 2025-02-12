@@ -11,6 +11,7 @@ import SetListView from "./pages/SetListView";
 import Onboarding from "./pages/Onboarding";
 import { SongSelectionContextProvider } from "./context/SongSelectionContext";
 import Profile from "./pages/Profile";
+import NoSidebar from "./components/NoSidebar";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/onboard",
-    element: <PrivateRoute><Onboarding /></PrivateRoute>,
+    element: <NoSidebar><Onboarding /></NoSidebar>,
   },
   {
     path: "/profile",

@@ -1,5 +1,5 @@
 import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { UserProfile } from "../context/ProfileContext";

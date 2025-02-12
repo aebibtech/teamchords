@@ -10,25 +10,26 @@ import { handleCopyLink, handlePreview } from "../../utils/setlists";
 import { v4 as uuidv4 } from 'uuid';
 import { useSongSelection } from "../../context/SongSelectionContext";
 import { UserProfile } from "../../context/ProfileContext";
+import { defaultOutputValue } from "../../constants";
 
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     const songStuff = useSongSelection();
 
     const handleAdd = () => {
-        onAdd((prevOutputs) => [...prevOutputs, { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, index: uuidv4() }]);
-        songStuff.setSelectedSong({song: "", targetKey: ""});
+        onAdd((prevOutputs) => [...prevOutputs, { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, capo: songStuff.selectedSong.capo, index: uuidv4() }]);
+        songStuff.setSelectedSong(defaultOutputValue);
         onClose();
     };
 
     const handleEdit = () => {
-        onAdd((prevOutputs) => prevOutputs.map((output) => output.index === songStuff.songId ? { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, index: output.index } : output));
-        songStuff.setSelectedSong({song: "", targetKey: ""});
+        onAdd((prevOutputs) => prevOutputs.map((output) => output.index === songStuff.songId ? { song: songStuff.selectedSong.song, targetKey: songStuff.selectedSong.targetKey, capo: songStuff.selectedSong.capo, index: output.index } : output));
+        songStuff.setSelectedSong(defaultOutputValue);
         songStuff.setIsEdit(false);
         onClose();
     };
 
     const handleEditClose = () => {
-        songStuff.setSelectedSong({song: "", targetKey: ""});
+        songStuff.setSelectedSong(defaultOutputValue);
         songStuff.setIsEdit(false);
         onClose();
     };
@@ -57,6 +58,13 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
                 <option value="A">A</option>
                 <option value="A#">A#</option>
                 <option value="B">B</option>
+            </select>
+            <label htmlFor="capo">Capo</label>
+            <select id="capo" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.capo} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, capo: Number(e.target.value)}))}>
+                <option value="0">Select Fret</option>
+                {"1 2 3 4 5 6 7 8 9 10 11 12".split(" ").map((value) => (
+                    <option key={value} value={value}>{value}</option>
+                ))}
             </select>
             <div className="flex justify-end gap-2">
                 <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEdit : handleAdd} disabled={!songStuff.selectedSong.song || !songStuff.selectedSong.targetKey}>
@@ -93,7 +101,7 @@ const SetListForm = () => {
                 await fetchSheets();
                 const data = await getSetList(id);
                 setName(data.name);
-                setOutputs(data.outputs.map((output) => ({ song: output.chordSheetId, targetKey: output.targetKey, index: uuidv4() })));
+                setOutputs(data.outputs.map((output) => ({ song: output.chordSheetId, targetKey: output.targetKey, capo: String(output.capo), index: uuidv4() })));
             };
             fetchSetList();
         }
@@ -101,7 +109,6 @@ const SetListForm = () => {
             fetchSheets();
         }
     }, []);
-
     
     const handleSave = async () => {
         const setlist = { name };
@@ -111,7 +118,7 @@ const SetListForm = () => {
             const newSetList = await createSetList(setlist);
             
             if (newSetList) {
-                await createOutputs(outputs.map(output => ({ chordSheetId: output.song, targetKey: output.targetKey, setListId: newSetList.id })));
+                await createOutputs(outputs.map(output => ({ chordSheetId: output.song, targetKey: output.targetKey, capo: output.capo, setListId: newSetList.id })));
             } else {
                 console.error("Failed to create set list");
             }
@@ -120,7 +127,7 @@ const SetListForm = () => {
         } else {
             await updateSetList(id, setlist);
             await deleteOutputs(id);
-            await createOutputs(outputs.map(output => ({ chordSheetId: output.song, targetKey: output.targetKey, setListId: id })));
+            await createOutputs(outputs.map(output => ({ chordSheetId: output.song, targetKey: output.targetKey, capo: output.capo, setListId: id })));
             navigate("/setlists");
         }
     };
@@ -133,7 +140,7 @@ const SetListForm = () => {
         setIsOpen(true);
         songStuff.setIsEdit(true);
         songStuff.setSongId(index);
-        songStuff.setSelectedSong({song: song.song, targetKey: song.targetKey});
+        songStuff.setSelectedSong({ song: song.song, targetKey: song.targetKey, capo: song.capo });
     };
 
     return (

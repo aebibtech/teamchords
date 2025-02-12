@@ -1,9 +1,10 @@
 import { createContext, useState, useContext } from "react";
+import { defaultOutputValue } from "../constants";
 
 const SongSelectionContext = createContext({});
 
 export const SongSelectionContextProvider = ({ children }) => {
-    const [selectedSong, setSelectedSong] = useState({song: "", targetKey: ""});
+    const [selectedSong, setSelectedSong] = useState(defaultOutputValue);
     const [songId, setSongId] = useState("");
     const [isEdit, setIsEdit] = useState(false);
 

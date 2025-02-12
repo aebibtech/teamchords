@@ -14,7 +14,8 @@ async function getOutputs(setListId) {
     return data;
 }
 
-async function createOutputs(outputs) {    
+async function createOutputs(outputs) {
+    console.log(outputs);    
     const { data, error } = await supabase
     .from("outputs")
     .insert(outputs)
@@ -43,4 +44,15 @@ async function deleteOutputs(setListId) {
     return data;
 }
 
-export { createOutputs, deleteOutputs, getOutputs };
+function getCapoText(capoValue) {
+    if (capoValue == 1)
+        return `${capoValue}st fret`;
+    if (capoValue == 2)
+        return `${capoValue}nd fret`;
+    if (capoValue == 3)
+        return `${capoValue}rd fret`;
+
+    return `${capoValue}th fret`;
+}
+
+export { createOutputs, deleteOutputs, getOutputs, getCapoText };

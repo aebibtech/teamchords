@@ -49,7 +49,6 @@ const SetListView = () => {
     const renderChordPro = (chordProContent, originalKey, targetKey, capo) => {
         try {
             if (chordProContent) {
-                console.log(originalKey, targetKey);
                 const parser = new ChordSheetJS.ChordProParser();
                 const distance = Key.distance(originalKey, targetKey);
                 chordProContent = chordProContent.replaceAll('{ci:', '{c:');
@@ -69,7 +68,6 @@ const SetListView = () => {
     const renderPrintOutput = (chordProContent, originalKey, targetKey, capo) => {
         try {
             if (chordProContent) {
-                console.log(originalKey, targetKey);
                 const parser = new ChordSheetJS.ChordProParser();
                 const distance = Key.distance(originalKey, targetKey);
                 chordProContent = chordProContent.replaceAll('{ci:', '{c:');

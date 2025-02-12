@@ -65,11 +65,32 @@ const SetListView = () => {
         }
     };
 
+    const renderPrintOutput = (chordProContent, originalKey, targetKey) => {
+        try {
+            if (chordProContent) {
+                console.log(originalKey, targetKey);
+                const parser = new ChordSheetJS.ChordProParser();
+                const distance = Key.distance(originalKey, targetKey);
+                chordProContent = chordProContent.replaceAll('{ci:', '{c:');
+                const song = parser.parse(chordProContent);
+                const transposedSong = song.transpose(distance);
+                const formatter = new ChordSheetJS.TextFormatter();
+                return formatter.format(transposedSong);
+            }
+            return '';
+        } catch (error) {
+            console.error(error);
+            return '';
+        }
+    };
   
     return (
         <div className="bg-gray-100">
+            <div className="print-output">
+                {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderPrintOutput(output.chordsheets.content, output.chordsheets.key, output.targetKey) }} />)}
+            </div>
             {setlist && <h2 className="text-center text-2xl font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md">{setlist.name}</h2>}
-            <div className="flex flex-col items-center">
+            <div className="view-setlist flex flex-col items-center">
                 {outputs.map((output) => <div key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey) }} className="sheet mt-4 bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full border border-gray-200" />)}
             </div>
             <footer className="text-center text-sm text-gray-500 pt-4">

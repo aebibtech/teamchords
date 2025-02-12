@@ -10,16 +10,27 @@
     font-weight: bold;
 }
 
+.print-output {
+    display: none;
+}
+
 @media print {
-    h2, footer {
+    div.view-setlist, h2, footer {
         display: none;
     }
-    .setlist-view {
-        box-shadow: none;
-        margin: 0;
-        font-size: 1.5rem;
+
+    .print-output {
+        display: block;
     }
-    table {
-        width: 100%;
+
+    pre {
+        column-count: 2;   /* Creates two columns */
+        column-gap: 20px;  /* Adjust gap between columns */
+        column-fill: auto; /* Ensures balanced content */
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        break-inside: avoid;
     }
+
 }

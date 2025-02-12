@@ -9,11 +9,12 @@ const SetList = () => {
   const { profile } = UserProfile();
   const [setLists, setSetLists] = useState([]);
 
+  const fetchData = async () => {
+    const setLists = await getSetLists(profile.orgId);
+    setSetLists(setLists);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const setLists = await getSetLists(profile.orgId);
-      setSetLists(setLists);
-    };
     fetchData();
   }, []);
 
@@ -26,7 +27,7 @@ const SetList = () => {
           New Set List
         </Link>
       </h1>
-      {setLists && <SetListTable data={setLists} />}
+      {setLists && <SetListTable data={setLists} onRefresh={async () => await fetchData()} />}
     </>
   );
 };

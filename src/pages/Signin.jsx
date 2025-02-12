@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { UserProfile } from "../context/ProfileContext";
 import { getProfile } from "../utils/common";
@@ -15,9 +15,9 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const fetchProfile = async (data) => {
-    const profile = await getProfile(data?.user?.id);
-    if (profile) {
-      setUserProfile(profile);
+    const d = await getProfile(data?.user?.id);
+    if (d) {
+      setUserProfile(d);
       setLoading(false);
       navigate("/library");
     }
@@ -51,8 +51,8 @@ const Signin = () => {
   };
 
   return (
-    <div className="bg-gray-700 w-screen h-screen flex">
-      <form onSubmit={handleSignIn} className="m-auto mt-24 p-12 border rounded bg-gray-100">
+    <div className="bg-gray-700 w-screen h-screen flex flex-col items-center align-center">
+      <form onSubmit={handleSignIn} className="m-auto p-12 border rounded bg-gray-100">
         <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
         <h2 className="font-bold pb-2">Sign in</h2>
         <p>

@@ -1,34 +1,32 @@
 import { UserAuth } from "../context/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import SidebarLayout from "./SidebarLayout";
 import { UserProfile } from "../context/ProfileContext";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getProfile } from "../utils/common";
-import { supabase } from "../supabaseClient";
 
 const PrivateRoute = ({ children }) => {
   const { session } = UserAuth();
   const { profile, setUserProfile } = UserProfile();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const data = await getProfile(user.id);
-        if (data) {
-          setUserProfile(data);
-        }
-        else {
-          navigate("/onboard");
-        }
-      }
-    };
-
-    if (session) {
-      fetchProfile();
+  const fetchProfile = async (data) => {
+    const d = await getProfile(data?.user?.id);
+    if (d) {
+      setUserProfile(d);
+      navigate("/library");
     }
-  }, [session]);
+    else {
+      navigate("/onboard");
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      fetchProfile(session);
+    }
+  }, []);
 
   if (!session) {
     return <Navigate to="/signin" />;

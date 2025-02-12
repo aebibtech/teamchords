@@ -47,7 +47,7 @@ const Onboarding = () => {
       <p className="text-sm text-gray-500 mb-3">Create an organization to get started.</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <input ref={inputRef} className="border rounded p-2 mb-3" placeholder="Organization Name" onChange={(e) => setOrgName(e.target.value)} />
-        <button className="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded" disabled={!orgName}>Create</button>
+        <button className="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded disabled:opacity-50" disabled={!orgName}>Create</button>
       </form>
     </>
   );

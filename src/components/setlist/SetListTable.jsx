@@ -9,14 +9,12 @@ import {
 import { Link } from "react-router-dom";
 import { deleteSetList, handlePreview, handleCopyLink } from "../../utils/setlists";
 import { Eye, Trash, Link2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
-const SetListTable = ({ data }) => {
-  const navigate = useNavigate();
+const SetListTable = ({ data, onRefresh }) => {
 
   const handleDelete = async (id) => {
     await deleteSetList(id);
-    navigate("/setlists");
+    onRefresh();
   };
 
   const columns = useMemo(

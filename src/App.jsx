@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Guitar } from "lucide-react";
+import { UserAuth } from "./context/AuthContext";
+import { useEffect } from "react";
 
 function App() {
+  const { session } = UserAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (session) {
+      navigate("/library");
+    }
+  }, [session]);
+
   return (
     <div>
       <div className="flex justify-between p-2 shadow-md text-white bg-gray-700">

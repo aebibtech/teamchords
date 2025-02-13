@@ -24,12 +24,14 @@ const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     if (session) {
-      fetchProfile(session);
+      if (!profile) {
+        fetchProfile(session);
+      }
     }
   }, []);
 
   if (!session) {
-    return <Navigate to="/signin" />;
+    return <Navigate to="/" />;
   }
 
   return <SidebarLayout>{children}</SidebarLayout>;

@@ -13,6 +13,7 @@ import { defaultOutputValue } from "../../constants";
 import { DndContext, closestCenter, useSensors, useSensor, PointerSensor } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Toaster, toast } from 'react-hot-toast';
 
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     const songStuff = useSongSelection();
@@ -130,6 +131,7 @@ const SetListForm = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [outputs, setOutputs] = useState([]);
     const songStuff = useSongSelection();
+    const [isSaving, setIsSaving] = useState(false);
     
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -170,6 +172,7 @@ const SetListForm = () => {
     }, []);
 
     const handleSave = async () => {
+        setIsSaving(true);
         const setlist = { name };
         if (id === "new") {
             setlist.orgId = profile.orgId;
@@ -182,7 +185,8 @@ const SetListForm = () => {
                     setListId: newSetList.id,
                 })));
             } else {
-                console.error("Failed to create set list");
+                // console.error("Failed to create set list");
+                toast.error("Failed to create set list.");
             }
             navigate("/setlists");
         } else {
@@ -194,8 +198,10 @@ const SetListForm = () => {
                 capo: output.capo,
                 setListId: id,
             })));
-            navigate("/setlists");
+            // navigate("/setlists");
+            toast.success("Set list updated!");
         }
+        setIsSaving(false);
     };
 
     const handleDeleteSong = (index, event) => {
@@ -225,6 +231,7 @@ const SetListForm = () => {
 
     return (
         <>
+            <Toaster />
             <SongSelectionDialog sheets={sheets} onAdd={setOutputs} isOpen={isOpen} onClose={() => setIsOpen(false)} />
             <div className="mb-4">
                 <label htmlFor="name">Set List Name</label>
@@ -239,20 +246,20 @@ const SetListForm = () => {
             </div>
             <div className="flex flex-col lg:flex-row justify-between gap-4">
                 <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
-                    <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2" disabled={!name}>
+                    <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={!name || isSaving}>
                         <Save size={16} /> Save
                     </button>
-                    <button onClick={() => setIsOpen(true)} className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex items-center gap-2">
+                    <button onClick={() => setIsOpen(true)} className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                         <Plus size={16} /> Add Song
                     </button>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
                     {id !== "new" && (
                         <>
-                            <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2">
+                            <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                                 <Link2 size={16} /> Copy Link
                             </button>
-                            <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2">
+                            <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                                 <Eye size={16} /> Preview
                             </button>
                         </>

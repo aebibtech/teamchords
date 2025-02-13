@@ -3,9 +3,10 @@ import { createContext, useContext, useState } from "react";
 const ProfileContext = createContext();
 
 export const ProfileContextProvider = ({ children }) => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const setUserProfile = (user) => {
+    localStorage.setItem("profile", JSON.stringify(user));
     setProfile(user);
   }
 

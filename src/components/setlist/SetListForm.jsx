@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useSongSelection } from "../../context/SongSelectionContext";
 import { UserProfile } from "../../context/ProfileContext";
 import { defaultOutputValue } from "../../constants";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter, useSensors, useSensor, PointerSensor } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -101,10 +101,19 @@ const SortableRow = ({ output, index, sheets, handleDeleteSong, openEditDialog }
             <td>{sheets.find(sheet => sheet.id === output.song)?.title || "Unknown"}</td>
             <td>{output.targetKey}</td>
             <td className="flex gap-2">
-                <button className="text-gray-500 hover:text-gray-600 flex items-center gap-2" onClick={() => handleDeleteSong(output.index)}>
+                <button
+                    data-no-dnd="true"
+                    className="text-gray-500 hover:text-gray-600 flex items-center gap-2 disabled:opacity-50"
+                    onClick={(event) => handleDeleteSong(output.index, event)}
+                >
                     <Trash size={16} />
                 </button>
-                <button className="text-gray-500 hover:text-gray-600 flex items-center gap-2" onClick={() => openEditDialog(output.index, output)}>
+
+                <button
+                    data-no-dnd="true"
+                    className="text-gray-500 hover:text-gray-600 flex items-center gap-2 disabled:opacity-50"
+                    onClick={(event) => openEditDialog(output.index, output, event)}
+                >
                     <Edit size={16} />
                 </button>
             </td>
@@ -121,6 +130,20 @@ const SetListForm = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [outputs, setOutputs] = useState([]);
     const songStuff = useSongSelection();
+    
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5, // Prevent accidental drags
+            },
+        })
+    );
+
+    const handleDragStart = (event) => {
+        if (event.active.data.current?.type === "button") {
+            return; // Prevent dragging when clicking buttons
+        }
+    };
 
     useEffect(() => {
         const fetchSheets = async () => {
@@ -175,16 +198,20 @@ const SetListForm = () => {
         }
     };
 
-    const handleDeleteSong = index => {
-        setOutputs(outputs.filter(output => output.index !== index));
+    const handleDeleteSong = (index, event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setOutputs((prevOutputs) => prevOutputs.filter((output) => output.index !== index));
     };
-
-    const openEditDialog = (index, song) => {
+    
+    const openEditDialog = (index, song, event) => {
+        event.stopPropagation();
+        event.preventDefault();
         setIsOpen(true);
         songStuff.setIsEdit(true);
         songStuff.setSongId(index);
         songStuff.setSelectedSong({ song: song.song, targetKey: song.targetKey, capo: song.capo });
-    };
+    };    
 
     const handleDragEnd = event => {
         const { active, over } = event;
@@ -233,7 +260,7 @@ const SetListForm = () => {
                 </div>
             </div>
             <div className="mt-4 overflow-y-auto">
-                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} sensors={sensors} onDragStart={handleDragStart}>
                     <SortableContext items={outputs.map(output => output.index)}>
                         <table className="w-full border border-gray-300 bg-white rounded-lg">
                             <thead className="bg-gray-200">

@@ -6,6 +6,7 @@ import { Save } from "lucide-react";
 import { UserProfile } from "../../context/ProfileContext";
 import Editor from "@monaco-editor/react";
 import { defaultContent, defaultKey, chordProGuideURL } from "../../constants";
+import { Toaster, toast } from 'react-hot-toast';
 
 const ChordProSheet = () => {
     const { profile } = UserProfile();
@@ -15,6 +16,7 @@ const ChordProSheet = () => {
     const [artist, setArtist] = useState("");
     const [key, setKey] = useState(defaultKey);
     const [content, setContent] = useState(defaultContent);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (id !== 'new') {
@@ -46,6 +48,7 @@ const ChordProSheet = () => {
     };
 
     const handleSave = async () => {
+        setIsSaving(true);
         const chordsheet = { title, artist, key, content };
         if (id === 'new') {
             chordsheet.orgId = profile.orgId;
@@ -54,12 +57,15 @@ const ChordProSheet = () => {
             navigate("/library");
         } else {
             await updateChordsheet(id, chordsheet);
-            navigate("/library");
+            // navigate("/library");
+            toast.success("Changes successfully saved!");
         }
+        setIsSaving(false);
     };
 
     return (
         <>
+            <Toaster />
             <div className="mb-4">
                 <label htmlFor="title" className="block font-semibold">Title</label>
                 <input 
@@ -110,7 +116,7 @@ const ChordProSheet = () => {
             <button 
                 onClick={handleSave} 
                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" 
-                disabled={!title || !artist || !key || !content}
+                disabled={!title || !artist || !key || !content || isSaving}
             >
                 <Save size={16} /> 
                 Save

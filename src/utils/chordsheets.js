@@ -1,18 +1,28 @@
 import { supabase } from "../supabaseClient";
 
-async function getChordsheets(orgId) {
-    const { data, error } = await supabase
-    .from("chordsheets")
-    .select('*')
-    .eq("orgId", orgId)
-    .order('artist', { ascending: true });
+async function getChordsheets(orgId, pageIndex = 0, pageSize = 10, searchTerm = "") {
+    const from = pageIndex * pageSize;
+    const to = from + pageSize - 1;
+
+    let query = supabase
+        .from("chordsheets")
+        .select("*", { count: "exact" })
+        .eq("orgId", orgId)
+        .order("artist", { ascending: true })
+        .range(from, to);
+
+    if (searchTerm) {
+        query = query.or(`title.ilike.%${searchTerm}%,artist.ilike.%${searchTerm}%`);
+    }
+
+    const { data, error, count } = await query;
 
     if (error) {
         console.error("Error fetching chordsheets:", error);
-        return null;
+        return { data: [], count: 0 };
     }
 
-    return data;
+    return { data, count };
 }
 
 async function getChordsheet(id) {

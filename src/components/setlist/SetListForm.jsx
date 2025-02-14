@@ -149,7 +149,7 @@ const SetListForm = () => {
 
     useEffect(() => {
         const fetchSheets = async () => {
-            const data = await getChordsheets(profile.orgId);
+            const { data, count } = await getChordsheets(profile.orgId, 0, -1, "");
             setSheets(data);
         };
 

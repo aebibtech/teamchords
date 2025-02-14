@@ -9,7 +9,10 @@ async function getChordsheets(orgId, pageIndex = 0, pageSize = 10, searchTerm = 
         .select("*", { count: "exact" })
         .eq("orgId", orgId)
         .order("artist", { ascending: true })
-        .range(from, to);
+    
+    if (pageSize !== -1) {
+        query.range(from, to);
+    }
 
     if (searchTerm) {
         query = query.or(`title.ilike.%${searchTerm}%,artist.ilike.%${searchTerm}%`);

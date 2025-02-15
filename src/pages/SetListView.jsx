@@ -4,7 +4,7 @@ import { getOutputs, getCapoText } from "../utils/outputs";
 import { getSetList } from "../utils/setlists";
 import ChordSheetJS from "chordsheetjs";
 import { Key } from "chordsheetjs";
-import { Guitar } from "lucide-react";
+import { Guitar, PrinterIcon } from "lucide-react";
 import { supabase } from "../supabaseClient";
 
 const SetListView = () => {
@@ -83,13 +83,17 @@ const SetListView = () => {
             return '';
         }
     };
+
+    const handlePrint = () => {
+        window.print();
+    };
   
     return (
         <div className="bg-gray-100">
             <div className="print-output">
                 {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderPrintOutput(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
             </div>
-            {setlist && <h2 className="text-center text-sm md:text-base lg:text-lg font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md">{setlist.name}</h2>}
+            {setlist && <h2 className="text-center text-sm md:text-base lg:text-lg font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md flex items-center gap-2 justify-center"><span>{setlist.name}</span><button onClick={handlePrint} className="flex items-center justify-center gap-1 bg-gray-500 hover:bg-gray-600 p-2 rounded font-normal"><PrinterIcon size={18} /> Print</button></h2>}
             <div className="view-setlist flex flex-col items-center">
                 {outputs.map((output) => <div key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} className="sheet text-[10px] md:text-sm lg:text-base mt-4 bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full border border-gray-200" />)}
             </div>

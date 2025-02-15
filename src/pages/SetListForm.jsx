@@ -14,6 +14,7 @@ import { DndContext, closestCenter, useSensors, useSensor, PointerSensor } from 
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Toaster, toast } from 'react-hot-toast';
+import Spinner from "../components/Spinner";
 
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
     const songStuff = useSongSelection();
@@ -134,6 +135,7 @@ const SetListForm = () => {
     const [outputs, setOutputs] = useState([]);
     const songStuff = useSongSelection();
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -151,7 +153,7 @@ const SetListForm = () => {
 
     useEffect(() => {
         const fetchSheets = async () => {
-            const { data, count } = await getChordsheets(profile.orgId, 0, -1, "");
+            const { data } = await getChordsheets(profile.orgId, 0, -1, "");
             setSheets(data);
         };
 
@@ -167,9 +169,10 @@ const SetListForm = () => {
                     index: uuidv4(),
                 })));
             };
-            fetchSetList();
-        } else {
-            fetchSheets();
+            fetchSetList().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
+        }
+        else {
+            fetchSheets().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
         }
     }, []);
 
@@ -231,6 +234,15 @@ const SetListForm = () => {
         setOutputs(arrayMove(outputs, oldIndex, newIndex));
     };
 
+    if (isLoading) {
+        return (
+            <>
+                <Toaster />
+                <Spinner />
+            </>
+        );
+    }
+
     return (
         <>
             <Toaster />
@@ -246,22 +258,22 @@ const SetListForm = () => {
                     placeholder="Set List Name"
                 />
             </div>
-            <div className="flex flex-col lg:flex-row justify-between gap-4">
-                <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
-                    <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={!name || isSaving}>
+            <div className="flex flex-col sm:flex-row justify-between">
+                <div className="flex flex-col sm:flex-row sm:gap-1 flex-wrap">
+                    <button onClick={handleSave} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={!name || isSaving}>
                         <Save size={16} /> Save
                     </button>
-                    <button onClick={() => setIsOpen(true)} className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
+                    <button onClick={() => setIsOpen(true)} className="border border-gray-500 rounded p-2 text-gray-500 hover:text-gray-600 mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                         <Plus size={16} /> Add Song
                     </button>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
+                <div className="flex flex-col sm:flex-row sm:gap-1 flex-wrap">
                     {id !== "new" && (
                         <>
-                            <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
+                            <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                                 <Link2 size={16} /> Copy Link
                             </button>
-                            <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" disabled={isSaving}>
+                            <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                                 <Eye size={16} /> Preview
                             </button>
                         </>

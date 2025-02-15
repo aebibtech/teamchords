@@ -5,6 +5,8 @@ import ChordFilesUploadDialog from "../components/chordlibrary/ChordFilesUploadD
 import { Link } from "react-router-dom";
 import { Plus, Upload, Search } from "lucide-react";
 import { UserProfile } from "../context/ProfileContext";
+import { Toaster, toast } from 'react-hot-toast';
+import Spinner from "../components/Spinner";
 
 const ChordLibrary = () => {
   const [chordsheets, setChordsheets] = useState([]);
@@ -16,6 +18,7 @@ const ChordLibrary = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const { profile } = UserProfile();
   const debounceTimeout = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Debounce effect to delay API call
   useEffect(() => {
@@ -38,8 +41,17 @@ const ChordLibrary = () => {
       setChordsheets(data);
       setTotalCount(count);
     };
-    fetchData();
+    fetchData().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
   }, [pageIndex, pageSize, debouncedSearchTerm, profile.orgId]);
+
+  if (isLoading) {
+    return (
+        <>
+            <Toaster />
+            <Spinner />
+        </>
+    );
+  }
 
   return (
     <>

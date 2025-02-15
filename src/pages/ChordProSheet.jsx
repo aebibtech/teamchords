@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getChordsheet, createChordsheet, updateChordsheet } from "../../utils/chordsheets";
+import { getChordsheet, createChordsheet, updateChordsheet } from "../utils/chordsheets";
 import { useState, useEffect } from "react";
 import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
-import { UserProfile } from "../../context/ProfileContext";
+import { UserProfile } from "../context/ProfileContext";
 import Editor from "@monaco-editor/react";
-import { defaultContent, defaultKey, chordProGuideURL } from "../../constants";
+import { defaultContent, defaultKey, chordProGuideURL } from "../constants";
 import { Toaster, toast } from 'react-hot-toast';
 
 const ChordProSheet = () => {

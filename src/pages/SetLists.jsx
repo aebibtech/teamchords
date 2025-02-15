@@ -4,10 +4,13 @@ import { Link } from "react-router-dom";
 import { Plus } from 'lucide-react'
 import { getSetLists } from "../utils/setlists";
 import SetListTable from "../components/setlist/SetListTable";
+import { Toaster, toast } from 'react-hot-toast';
+import Spinner from "../components/Spinner";
 
 const SetList = () => {
   const { profile } = UserProfile();
   const [setLists, setSetLists] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     const setLists = await getSetLists(profile.orgId);
@@ -15,8 +18,17 @@ const SetList = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
   }, []);
+
+  if (isLoading) {
+    return (
+        <>
+            <Toaster />
+            <Spinner />
+        </>
+    );
+  }
 
   return (
     <>

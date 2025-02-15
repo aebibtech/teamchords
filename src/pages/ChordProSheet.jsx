@@ -7,6 +7,7 @@ import { UserProfile } from "../context/ProfileContext";
 import Editor from "@monaco-editor/react";
 import { defaultContent, defaultKey, chordProGuideURL } from "../constants";
 import { Toaster, toast } from 'react-hot-toast';
+import Spinner from "../components/Spinner";
 
 const ChordProSheet = () => {
     const { profile } = UserProfile();
@@ -17,6 +18,7 @@ const ChordProSheet = () => {
     const [key, setKey] = useState(defaultKey);
     const [content, setContent] = useState(defaultContent);
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (id !== 'new') {
@@ -27,7 +29,7 @@ const ChordProSheet = () => {
                 setKey(data.key);
                 setContent(data.content);
             };
-            fetchChordsheet();
+            fetchChordsheet().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
         }
     }, [id]);
 
@@ -62,6 +64,15 @@ const ChordProSheet = () => {
         }
         setIsSaving(false);
     };
+
+    if (isLoading) {
+        return (
+            <>
+                <Toaster />
+                <Spinner />
+            </>
+        );
+    }
 
     return (
         <>

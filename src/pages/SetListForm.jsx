@@ -1,15 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getSetList, createSetList, updateSetList } from "../../utils/setlists";
+import { getSetList, createSetList, updateSetList } from "../utils/setlists";
 import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
-import { getChordsheets } from "../../utils/chordsheets";
+import { getChordsheets } from "../utils/chordsheets";
 import { Plus, X, Trash, Edit, Link2, Eye } from "lucide-react";
-import { createOutputs, deleteOutputs } from "../../utils/outputs";
-import { handleCopyLink, handlePreview } from "../../utils/setlists";
+import { createOutputs, deleteOutputs } from "../utils/outputs";
+import { handleCopyLink, handlePreview } from "../utils/setlists";
 import { v4 as uuidv4 } from 'uuid';
-import { useSongSelection } from "../../context/SongSelectionContext";
-import { UserProfile } from "../../context/ProfileContext";
-import { defaultOutputValue } from "../../constants";
+import { useSongSelection } from "../context/SongSelectionContext";
+import { UserProfile } from "../context/ProfileContext";
+import { defaultOutputValue } from "../constants";
 import { DndContext, closestCenter, useSensors, useSensor, PointerSensor } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -39,6 +39,10 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
 
     return (
         <dialog open={isOpen} className="w-full sm:w-3/4 md:w-1/2 lg:w-1/4 border rounded p-4 shadow-md z-10">
+            <h3 className="text-lg font-bold flex justify-between items-center mb-4">
+                <span>{songStuff.isEdit ? "Edit" : "Add"} Song</span>
+                <X size={24} onClick={songStuff.isEdit ? handleEditClose : onClose} className="cursor-pointer text-gray-500 hover:text-gray-600" />
+            </h3>
             <label htmlFor="song">Song</label>
             <select id="song" className="w-full p-2 border rounded text-lg mt-2 mb-4" value={songStuff.selectedSong.song} onChange={(e) => songStuff.setSelectedSong((p) => ({...p, song: e.target.value}))}>
                 <option value="">Select a song</option>
@@ -71,11 +75,9 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
             </select>
             <div className="flex justify-end gap-2">
                 <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEdit : handleAdd} disabled={!songStuff.selectedSong.song || !songStuff.selectedSong.targetKey}>
-                    <Plus size={16} />
                     {songStuff.isEdit ? "Update" : "Add"}
                 </button>
-                <button className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEditClose : onClose}>
-                    <X size={16} />
+                <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEditClose : onClose}>
                     Cancel
                 </button>
             </div>

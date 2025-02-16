@@ -31,6 +31,9 @@ const ChordProSheet = () => {
             };
             fetchChordsheet().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
         }
+        else {
+            setIsLoading(false);
+        }
     }, [id]);
 
     const renderChordPro = (chordProContent) => {

@@ -23,10 +23,10 @@ const SetList = () => {
 
   if (isLoading) {
     return (
-        <>
-            <Toaster />
-            <Spinner />
-        </>
+      <>
+        <Toaster />
+        <Spinner />
+      </>
     );
   }
 

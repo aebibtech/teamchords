@@ -5,7 +5,7 @@ import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
 import { UserProfile } from "../context/ProfileContext";
 import Editor from "@monaco-editor/react";
-import { defaultContent, defaultKey, chordProGuideURL } from "../constants";
+import { defaultContent, defaultKey, chordProGuideURL, keys } from "../constants";
 import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
 
@@ -106,7 +106,7 @@ const ChordProSheet = () => {
                     value={key} 
                     onChange={(e) => setKey(e.target.value)}
                 >
-                    {"C C# D D# E F F# G G# A A# B".split(" ").map((note) => (
+                    {keys.map((note) => (
                         <option key={note} value={note}>{note}</option>
                     ))}
                 </select>

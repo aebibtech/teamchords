@@ -1,5 +1,5 @@
 import { UserAuth } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import SidebarLayout from "./SidebarLayout";
 import { UserProfile } from "../context/ProfileContext";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const PrivateRoute = ({ children }) => {
   const { session } = UserAuth();
   const { profile, setUserProfile } = UserProfile();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchProfile = async (data) => {
     const d = await getProfile(data?.user?.id);
@@ -31,7 +32,7 @@ const PrivateRoute = ({ children }) => {
   }, []);
 
   if (!session) {
-    return <Navigate to="/" />;
+    return <Navigate to={location.pathname ?? "/"} />;
   }
 
   return <SidebarLayout>{children}</SidebarLayout>;

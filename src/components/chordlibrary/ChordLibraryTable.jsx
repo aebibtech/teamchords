@@ -127,7 +127,7 @@ const ChordLibraryTable = ({ data, pageIndex, setPageIndex, totalCount, pageSize
         >
           <ArrowLeft />
         </button>
-        <div className="flex mx-2">{renderPageNumbers()}</div>
+        <div className="flex mx-2 hidden sm:inline-block">{renderPageNumbers()}</div>
         <button
           className="px-4 py-2 border rounded disabled:opacity-50"
           onClick={() => setPageIndex(pageIndex + 1)}

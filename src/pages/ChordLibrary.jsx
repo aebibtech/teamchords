@@ -3,7 +3,7 @@ import { getChordsheets } from "../utils/chordsheets";
 import ChordLibraryTable from "../components/chordlibrary/ChordLibraryTable";
 import ChordFilesUploadDialog from "../components/chordlibrary/ChordFilesUploadDialog";
 import { Link } from "react-router-dom";
-import { Plus, Upload, Search } from "lucide-react";
+import { MoreVertical, Plus, Upload, Search } from "lucide-react";
 import { UserProfile } from "../context/ProfileContext";
 import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
@@ -19,6 +19,7 @@ const ChordLibrary = () => {
   const { profile } = UserProfile();
   const debounceTimeout = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Debounce effect to delay API call
   useEffect(() => {
@@ -57,7 +58,7 @@ const ChordLibrary = () => {
     <>
       <h1 className="w-full flex justify-between mb-4">
         <p className="text-2xl font-bold">Library</p>
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <Link
             to="/library/new"
             className="border rounded px-2 py-2 bg-gray-500 hover:bg-gray-600 text-white flex items-center gap-2"
@@ -71,6 +72,57 @@ const ChordLibrary = () => {
           >
             <Upload size={16} /> Upload
           </button>
+        </div> */}
+        <div className="flex gap-2">
+          {/* Full Buttons for Larger Screens */}
+          <div className="hidden sm:flex gap-2">
+            <Link
+              to="/library/new"
+              className="border rounded px-2 py-2 bg-gray-500 hover:bg-gray-600 text-white flex items-center gap-2"
+            >
+              <Plus size={16} />
+              New Song
+            </Link>
+            <button
+              onClick={() => setIsUploadDialogOpen(true)}
+              className="border rounded px-2 py-2 bg-gray-500 hover:bg-gray-600 text-white flex items-center gap-2"
+            >
+              <Upload size={16} /> Upload
+            </button>
+          </div>
+
+          {/* Ellipsis Menu for Small Screens */}
+          <div className="sm:hidden relative">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="border rounded px-2 py-2 text-gray-500 flex items-center"
+            >
+              <MoreVertical size={20} />
+            </button>
+
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 bg-white border rounded shadow-md w-32 z-10">
+                <Link
+                  to="/library/new"
+                  className="block px-4 py-2 hover:bg-gray-200 text-black text-sm"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Plus size={14} className="inline-block mr-2" />
+                  New Song
+                </Link>
+                <button
+                  onClick={() => {
+                    setIsUploadDialogOpen(true);
+                    setMenuOpen(false);
+                  }}
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-200 text-black text-sm"
+                >
+                  <Upload size={14} className="inline-block mr-2" />
+                  Upload
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </h1>
 

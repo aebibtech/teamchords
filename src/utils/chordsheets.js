@@ -9,6 +9,7 @@ async function getChordsheets(orgId, pageIndex = 0, pageSize = 10, searchTerm = 
         .select("*", { count: "exact" })
         .eq("orgId", orgId)
         .order("artist", { ascending: true })
+        .order("title", { ascending: true })
     
     if (pageSize !== -1) {
         query.range(from, to);

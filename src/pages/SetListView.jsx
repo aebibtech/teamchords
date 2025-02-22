@@ -68,25 +68,6 @@ const SetListView = () => {
         }
     };
 
-    const renderPrintOutput = (chordProContent, originalKey, targetKey, capo) => {
-        try {
-            if (chordProContent) {
-                const parser = new ChordSheetJS.ChordProParser();
-                const distance = Key.distance(originalKey, targetKey);
-                chordProContent = chordProContent.replaceAll('{ci:', '{c:');
-                const song = parser.parse(chordProContent);
-                const transposedSong = song.transpose(distance);
-                const changedTitleSong = transposedSong.changeMetadata('title', capo !== 0 ? `${transposedSong.title} (Capo on ${getCapoText(capo)})` : transposedSong.title);
-                const formatter = new ChordSheetJS.TextFormatter();
-                return formatter.format(changedTitleSong);
-            }
-            return '';
-        } catch (error) {
-            console.error(error);
-            return '';
-        }
-    };
-
     const handlePrint = () => {
         window.print();
     };
@@ -103,7 +84,7 @@ const SetListView = () => {
     return (
         <div className="bg-gray-100">
             <div className="hidden print:block">
-                {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderPrintOutput(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
+                {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
             </div>
             {setlist && <h2 className="print:hidden text-center text-sm md:text-base lg:text-lg font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md flex items-center gap-2 justify-center"><span>{setlist.name}</span><button onClick={handlePrint} className="flex items-center justify-center gap-1 bg-gray-500 hover:bg-gray-600 p-2 rounded font-normal"><PrinterIcon size={18} /> Print</button></h2>}
             <div className="print:hidden flex flex-col items-center">

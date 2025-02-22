@@ -9,7 +9,7 @@
 }
 
 .paragraph {
-    margin-bottom: 2rem;
+    margin-bottom: 24px;
 }
 
 .chord {
@@ -26,22 +26,18 @@ td.comment {
 }
 
 @media print {
-    /* div.view-setlist, footer {
-        display: none;
-    }
-
-    .print-output {
-        display: block;
-    } */
-
     pre {
         column-count: 2;   /* Creates two columns */
         column-gap: 20px;  /* Adjust gap between columns */
         column-fill: auto; /* Ensures balanced content */
         font-family: "Inter", serif;
-        font-size: 14px;
+        font-size: 12px;
         white-space: pre-wrap;
         break-inside: avoid;
     }
 
+    pre > h1 {
+        font-size: 16px;
+        font-weight: bold;
+    }
 }

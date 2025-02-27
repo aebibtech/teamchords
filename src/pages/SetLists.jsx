@@ -32,6 +32,7 @@ const SetList = () => {
 
   return (
     <>
+      <Toaster />
       <h1 className="w-full flex justify-between mb-4">
         <p className="text-2xl font-bold">Set Lists</p>
         <Link to="/setlists/new" className="border rounded px-2 py-2 bg-gray-500 hover:bg-gray-600 text-white flex items-center gap-2">

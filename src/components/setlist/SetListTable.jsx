@@ -9,11 +9,17 @@ import {
 import { Link } from "react-router-dom";
 import { deleteSetList, handlePreview, handleCopyLink } from "../../utils/setlists";
 import { Eye, Trash, Link2 } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 const SetListTable = ({ data, onRefresh }) => {
+  const handleCopyLinkWrapper = async (id) => {
+    await handleCopyLink(id);
+    toast.success('Link copied to clipboard!');
+  };
 
   const handleDelete = async (id) => {
     await deleteSetList(id);
+    toast.success("Deleted set list successfully.")
     onRefresh();
   };
 
@@ -40,7 +46,7 @@ const SetListTable = ({ data, onRefresh }) => {
         cell: ({ row }) => (
           <div className="flex gap-4">
             <button onClick={async () => await handlePreview(row.original.id)}><Eye size={16} /></button>
-            <button onClick={async () => await handleCopyLink(row.original.id)}><Link2 size={16} /></button>
+            <button onClick={async () => await handleCopyLinkWrapper(row.original.id)}><Link2 size={16} /></button>
             <button onClick={async () => await handleDelete(row.original.id)}><Trash size={16} /></button>
           </div>
         ),

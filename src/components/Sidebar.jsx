@@ -15,7 +15,6 @@ const Sidebar = () => {
 
     try {
       await signOut();
-      setUserProfile(null);
       navigate("/signin");
     } catch (err) {
       console.error(err);

@@ -53,7 +53,7 @@ const Signin = () => {
   return (
     <div className="bg-gray-700 w-screen h-screen flex flex-col items-center align-center">
       <form onSubmit={handleSignIn} className="m-auto p-12 border rounded bg-gray-100">
-        <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
+        <h1 className="text-2xl mb-12 font-bold text-center"><Link to="/">Team Chords</Link></h1>
         <h2 className="font-bold pb-2">Sign in</h2>
         <p>
           Don't have an account yet? <Link className="text-blue-500" to="/signup">Sign up</Link>

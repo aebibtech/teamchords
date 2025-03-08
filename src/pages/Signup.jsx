@@ -33,7 +33,7 @@ const Signup = () => {
   return (
     <div className="bg-gray-700 w-screen h-screen flex flex-col items-center align-center">
       <form onSubmit={handleSignUp} className="m-auto p-12 border rounded bg-gray-100">
-        <h1 className="text-2xl mb-12 font-bold text-center">Team Chords</h1>
+        <h1 className="text-2xl mb-12 font-bold text-center"><Link to="/">Team Chords</Link></h1>
         <h2 className="font-bold pb-2">Sign up today!</h2>
         <p>
           Already have an account? <Link className="text-blue-500" to="/signin">Sign in</Link>

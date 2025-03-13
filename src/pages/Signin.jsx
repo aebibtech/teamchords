@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { UserProfile } from "../context/ProfileContext";
 import { getProfile } from "../utils/common";
@@ -56,7 +56,7 @@ const Signin = () => {
         <h1 className="text-2xl mb-12 font-bold text-center"><Link to="/">Team Chords</Link></h1>
         <h2 className="font-bold pb-2">Sign in</h2>
         <p>
-          Don't have an account yet? <Link className="text-blue-500" to="/signup">Sign up</Link>
+          Don&apos;t have an account yet? <Link className="text-blue-500" to="/signup">Sign up</Link>
         </p>
         <div className="flex flex-col py-4">
           <input

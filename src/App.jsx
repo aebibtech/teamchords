@@ -23,13 +23,13 @@ function App() {
   return (
     <div className="h-screen overflow-y-scroll snap-mandatory snap-y scroll-smooth">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full flex justify-between p-3 sm:p-4 bg-gray-900 text-white shadow-md z-10">
+      <nav className="fixed top-0 left-0 w-full flex justify-between p-3 sm:p-4 bg-gray-700 text-white shadow-md z-10">
         <h1 className="flex items-center text-lg sm:text-xl">
           <Guitar size={28} className="mr-2" /> Team Chords
         </h1>
         <div>
           <Link
-            className="px-3 py-2 sm:px-4 sm:py-2 rounded bg-blue-500 hover:bg-blue-600 transition text-sm sm:text-base"
+            className="px-3 py-2 sm:px-4 sm:py-2 rounded bg-gray-500 hover:bg-gray-600 transition text-sm sm:text-base"
             to="/signin"
           >
             Sign In
@@ -42,17 +42,17 @@ function App() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="h-screen snap-center flex flex-col items-center justify-center bg-gray-900 text-white text-center px-2 sm:px-4"
+        className="h-screen snap-center flex flex-col items-center justify-center bg-gray-700 text-white text-center px-2 sm:px-4"
       >
         <h2 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4">
-          Your Team's Ultimate Chord Sharing Hub
+          Your Team&apos;s Ultimate Chord Sharing Hub
         </h2>
         <p className="text-base sm:text-lg max-w-md sm:max-w-2xl">
           Collaborate on chord sheets, create set lists, and share updates in real time.
         </p>
         <motion.div whileHover={{ scale: 1.05 }} className="mt-4 sm:mt-6">
           <Link
-            className="px-5 py-2 text-base sm:px-6 sm:py-3 sm:text-lg rounded bg-blue-500 hover:bg-blue-600 transition"
+            className="px-5 py-2 text-base sm:px-6 sm:py-3 sm:text-lg rounded bg-gray-500 hover:bg-gray-600 transition"
             to="/signup"
           >
             Get Started
@@ -94,7 +94,7 @@ function App() {
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeInUp}
-        className="h-screen snap-center flex flex-col items-center justify-center bg-gray-900 text-white text-center px-2 sm:px-4"
+        className="h-screen snap-center flex flex-col items-center justify-center bg-gray-700 text-white text-center px-2 sm:px-4"
       >
         <h3 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6">
           Start Your Musical Journey Today!
@@ -104,7 +104,7 @@ function App() {
         </p>
         <motion.div whileHover={{ scale: 1.05 }} className="mt-4 sm:mt-6">
           <Link
-            className="px-5 py-2 text-base sm:px-6 sm:py-3 sm:text-lg rounded bg-blue-500 hover:bg-blue-600 transition"
+            className="px-5 py-2 text-base sm:px-6 sm:py-3 sm:text-lg rounded bg-gray-500 hover:bg-gray-600 transition"
             to="/signup"
           >
             Sign Up Now

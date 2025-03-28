@@ -1,6 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import html2canvas from "html2canvas";
 import { getOutputs, getCapoText } from "../utils/outputs";
 import { getSetList } from "../utils/setlists";
@@ -13,7 +13,6 @@ import Spinner from "../components/Spinner";
 
 const SetListView = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [setlist, setSetlist] = useState(null);
     const [outputs, setOutputs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -28,13 +27,13 @@ const SetListView = () => {
             setOutputs(outputData);
             document.title = `Team Chords - ${setlistData.name}`;
         };
-        fetchSet().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
+        fetchSet().then(() => setIsLoading(false)).catch((err) => toast.error(`A network error has occured: ${err}`));
         
-        const channels = supabase.channel('custom-filter-channel')
+        supabase.channel('custom-filter-channel')
         .on(
             'postgres_changes',
             { event: '*', schema: 'public', table: 'setlists', filter: `id=eq.${id}` },
-            (payload) => {
+            () => {
                 fetchSet();
             }
         )
@@ -48,13 +47,52 @@ const SetListView = () => {
                 element.style.textAlign = 'center';
                 element.style.fontSize = '1.5rem';
             });
+    
+            // Check if the ogImage is already stored in localStorage
+            const storedOgImage = localStorage.getItem(`ogImage_${id}`);
+            if (storedOgImage) {
+                setOgImage(storedOgImage);
+            } else {
+                // Generate screenshot for OpenGraph image
+                html2canvas(document.querySelector(".sheet")).then(async (canvas) => {
+                    const imageData = canvas.toDataURL("image/png");
+                    const blob = await (await fetch(imageData)).blob(); // Convert base64 to Blob
+    
+                    // Upload the image to Supabase Storage
+                    const uploadImage = async () => {
+                        try {
+                            const fileName = `og-image-${id}-${Date.now()}.png`; // Unique file name
+                            const { error } = await supabase.storage
+                                .from("og-images") // Replace with your bucket name
+                                .upload(fileName, blob, {
+                                    contentType: "image/png",
+                                });
+    
+                            if (error) {
+                                throw error;
+                            }
+    
+                            // Get the public URL of the uploaded image
+                            const res = supabase.storage
+                                .from("og-images")
+                                .getPublicUrl(fileName);
 
-            // Generate screenshot for OpenGraph image
-            html2canvas(document.querySelector(".sheet")).then((canvas) => {
-                setOgImage(canvas.toDataURL("image/png"));
-            });
+                            // console.log("Public URL:", res.data.publicUrl);
+    
+                            setOgImage(res.data.publicUrl); // Set the public URL to state
+    
+                            // Save the public URL to localStorage
+                            localStorage.setItem(`ogImage_${id}`, res.data.publicUrl);
+                        } catch (error) {
+                            console.error("Error uploading image to Supabase Storage:", error);
+                        }
+                    };
+    
+                    uploadImage();
+                });
+            }
         }
-    }, [outputs]);
+    }, [outputs, id]);
 
     const renderChordPro = (chordProContent, originalKey, targetKey, capo) => {
         try {
@@ -89,26 +127,28 @@ const SetListView = () => {
     }
   
     return (
-        <div className="bg-gray-100">
-            <Helmet>
-                <title>{setlist ? `Team Chords - ${setlist.name}` : "Team Chords"}</title>
-                <meta property="og:title" content={setlist ? setlist.name : "Team Chords"} />
-                <meta property="og:description" content="View and manage your setlist with Team Chords." />
-                <meta property="og:image" content={ogImage} />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={window.location.href} />
-            </Helmet>
-            <div className="hidden print:block">
-                {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
+        <HelmetProvider>
+            <div className="bg-gray-100">
+                <Helmet>
+                    <title>{setlist ? `Team Chords - ${setlist.name}` : "Team Chords"}</title>
+                    <meta property="og:title" content={setlist ? setlist.name : "Team Chords"} />
+                    <meta property="og:description" content="View and manage your setlist with Team Chords." />
+                    <meta property="og:image" content={ogImage} />
+                    <meta property="og:type" content="website" />
+                    <meta property="og:url" content={window.location.href} />
+                </Helmet>
+                <div className="hidden print:block">
+                    {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
+                </div>
+                {setlist && <h2 className="print:hidden text-center text-sm md:text-base lg:text-lg font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md flex items-center gap-2 justify-center"><span>{setlist.name}</span><button onClick={handlePrint} className="flex items-center justify-center gap-1 bg-gray-500 hover:bg-gray-600 p-2 rounded font-normal"><PrinterIcon size={18} /> Print</button></h2>}
+                <div className="print:hidden flex flex-col items-center">
+                    {outputs.map((output) => <div key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} className="sheet text-[10px] md:text-sm lg:text-base mt-4 bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full border border-gray-200" />)}
+                </div>
+                <footer className="print:hidden text-center text-sm text-white w-full bg-gray-700">
+                    <p>Generated by <a href={window.location.origin} target="_blank" rel="noopener noreferrer"><Guitar className="inline-block" /> Team Chords</a></p>
+                </footer>
             </div>
-            {setlist && <h2 className="print:hidden text-center text-sm md:text-base lg:text-lg font-bold sticky top-0 left-0 z-10 w-full bg-gray-700 text-white py-4 shadow-md flex items-center gap-2 justify-center"><span>{setlist.name}</span><button onClick={handlePrint} className="flex items-center justify-center gap-1 bg-gray-500 hover:bg-gray-600 p-2 rounded font-normal"><PrinterIcon size={18} /> Print</button></h2>}
-            <div className="print:hidden flex flex-col items-center">
-                {outputs.map((output) => <div key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} className="sheet text-[10px] md:text-sm lg:text-base mt-4 bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full border border-gray-200" />)}
-            </div>
-            <footer className="print:hidden text-center text-sm text-white w-full bg-gray-700">
-                <p>Generated by <a href={window.location.origin} target="_blank" rel="noopener noreferrer"><Guitar className="inline-block" /> Team Chords</a></p>
-            </footer>
-        </div>
+        </HelmetProvider>
     );
 };
 

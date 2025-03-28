@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import html2canvas from "html2canvas";
 import { getOutputs, getCapoText } from "../utils/outputs";
 import { getSetList } from "../utils/setlists";
 import ChordSheetJS from "chordsheetjs";
@@ -15,6 +17,7 @@ const SetListView = () => {
     const [setlist, setSetlist] = useState(null);
     const [outputs, setOutputs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [ogImage, setOgImage] = useState("");
 
     useEffect(() => {
         const fetchSet = async () => {
@@ -45,9 +48,13 @@ const SetListView = () => {
                 element.style.textAlign = 'center';
                 element.style.fontSize = '1.5rem';
             });
+
+            // Generate screenshot for OpenGraph image
+            html2canvas(document.querySelector(".sheet")).then((canvas) => {
+                setOgImage(canvas.toDataURL("image/png"));
+            });
         }
     }, [outputs]);
-    
 
     const renderChordPro = (chordProContent, originalKey, targetKey, capo) => {
         try {
@@ -83,6 +90,14 @@ const SetListView = () => {
   
     return (
         <div className="bg-gray-100">
+            <Helmet>
+                <title>{setlist ? `Team Chords - ${setlist.name}` : "Team Chords"}</title>
+                <meta property="og:title" content={setlist ? setlist.name : "Team Chords"} />
+                <meta property="og:description" content="View and manage your setlist with Team Chords." />
+                <meta property="og:image" content={ogImage} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={window.location.href} />
+            </Helmet>
             <div className="hidden print:block">
                 {outputs.map((output) => <pre key={output.id} dangerouslySetInnerHTML={{ __html: renderChordPro(output.chordsheets.content, output.chordsheets.key, output.targetKey, output.capo) }} />)}
             </div>

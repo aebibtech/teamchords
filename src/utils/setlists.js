@@ -76,12 +76,12 @@ async function deleteSetList(id) {
 }
 
 const handleCopyLink = async (id) => {
-    const url = `https://tc.aebibtech.com/api/setlist?id=${id}`;
+    const url = `${window.location.origin}/setlists/share/${id}`;
     await navigator.clipboard.writeText(url);
 };
 
 const handlePreview = async (id) => {
-    const url = `https://tc.aebibtech.com/api/setlist?id=${id}`;
+    const url = `${window.location.origin}/setlists/share/${id}`;
     window.open(url, '_blank');
 };
 

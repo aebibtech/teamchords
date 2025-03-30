@@ -18,7 +18,7 @@ const SetList = () => {
   };
 
   useEffect(() => {
-    fetchData().then(() => setIsLoading(false)).catch((err) => toast.error("A network error has occured."));
+    fetchData().then(() => setIsLoading(false)).catch((err) => toast.error(`A network error has occured: ${err}.`));
   }, []);
 
   if (isLoading) {

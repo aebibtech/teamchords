@@ -4,7 +4,7 @@ import { supabase } from "../supabaseClient";
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [session, setSession] = useState(JSON.parse(sessionStorage.getItem("session")));
+  const [session, setSession] = useState(JSON.parse(localStorage.getItem("session")));
 
   // Sign up
   const signUpNewUser = async (email, password) => {
@@ -49,12 +49,12 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      sessionStorage.setItem("session", JSON.stringify(session));
+      localStorage.setItem("session", JSON.stringify(session));
       setSession(session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      sessionStorage.setItem("session", JSON.stringify(session));
+      localStorage.setItem("session", JSON.stringify(session));
       setSession(session);
     });
   }, []);

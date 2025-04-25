@@ -12,6 +12,8 @@ import Onboarding from "./pages/Onboarding";
 import { SongSelectionContextProvider } from "./context/SongSelectionContext";
 import Profile from "./pages/Profile";
 import NoSidebar from "./components/NoSidebar";
+import InviteUser from "./components/InviteUser";
+import UpdatePassword from "./pages/UpdatePassword";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -62,5 +64,21 @@ export const router = createBrowserRouter([
   {
     path: "/profile",
     element: <PrivateRoute><Profile /></PrivateRoute>,
+  },
+  {
+    path: "/invite",
+    element: (
+      <PrivateRoute>
+        <InviteUser />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/update-password",
+    element: (
+      <PrivateRoute>
+        <UpdatePassword />
+      </PrivateRoute>
+    ),
   },
 ]);

@@ -15,6 +15,8 @@ async function getProfile(id) {
         return null;
     }
 
+    console.table(data[0]);
+
     return data[0];
 }
 

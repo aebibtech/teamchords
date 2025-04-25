@@ -7,6 +7,7 @@ import { MoreVertical, Plus, Upload, Search } from "lucide-react";
 import { UserProfile } from "../context/ProfileContext";
 import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
+import Modal from "../components/Modal";
 
 const ChordLibrary = () => {
   const [chordsheets, setChordsheets] = useState([]);
@@ -135,7 +136,11 @@ const ChordLibrary = () => {
         />
       )}
 
-      <ChordFilesUploadDialog isOpen={isUploadDialogOpen} close={() => setIsUploadDialogOpen(false)} />
+      {isUploadDialogOpen && (
+        <Modal onClose={() => setIsUploadDialogOpen(false)}>
+          <ChordFilesUploadDialog close={() => setIsUploadDialogOpen(false)} />
+        </Modal>
+      )}
     </>
   );
 };

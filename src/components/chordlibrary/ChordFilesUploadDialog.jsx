@@ -30,14 +30,8 @@ const ChordFilesUploadDialog = ({ isOpen, close }) => {
     setIsUploading(false);
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      close();
-    }
-  }
-
   return (
-    <dialog onKeyDown={handleKeyDown} open={isOpen} className="w-full md:w-1/4 border rounded p-4 shadow-md absolute top-[5rem] z-10">
+    <div className="p-4">
       <h3 className="text-lg font-bold flex justify-between items-center"><span>Upload Chordsheets</span><X size={24} onClick={close} className="cursor-pointer text-gray-500 hover:text-gray-600" /></h3>
       <h4 className="text-sm text-gray-500 mb-4">Select files to upload (.chordpro, .cho, .crd)</h4>
       <input id="files" ref={inputRef} className="w-full p-2 border rounded text-lg mb-4" type="file" multiple onChange={handleFileChange} accept=".chordpro,.cho,.crd" />
@@ -45,7 +39,7 @@ const ChordFilesUploadDialog = ({ isOpen, close }) => {
         <button onClick={handleUpload} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled={isUploading || files.length === 0}>Upload</button>
         <button onClick={close} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Close</button>
       </div>
-    </dialog>
+    </div>
   )
 }
 

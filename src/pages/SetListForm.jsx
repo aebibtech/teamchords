@@ -218,6 +218,11 @@ const SetListForm = () => {
         setOutputs(arrayMove(outputs, oldIndex, newIndex));
     };
 
+    const handleCopyLinkWrapper = async (id) => {
+        await handleCopyLink(id);
+        toast.success('Link copied to clipboard!');
+    };
+
     if (isLoading) {
         return (
             <>
@@ -254,7 +259,7 @@ const SetListForm = () => {
                 <div className="flex flex-col sm:flex-row sm:gap-1 flex-wrap">
                     {id !== "new" && (
                         <>
-                            <button onClick={() => handleCopyLink(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>
+                            <button onClick={() => handleCopyLinkWrapper(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>
                                 <Link2 size={16} /> Copy Link
                             </button>
                             <button onClick={() => handlePreview(id)} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex justify-center items-center gap-2 disabled:opacity-50" disabled={isSaving}>

@@ -127,7 +127,7 @@ function App() {
           <span className="px-2 sm:px-4">Twitter</span>
           <span className="px-2 sm:px-4">Instagram</span>
         </div>
-        <p className="mt-4 sm:mt-6 text-sm">© {new Date().getFullYear()} Team Chords. All rights reserved.</p>
+        <p className="mt-4 sm:mt-6 text-sm"> {new Date().getFullYear()} Team Chords. All rights reserved.</p>
       </motion.footer>
     </div>
   );

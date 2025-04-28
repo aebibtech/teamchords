@@ -2,10 +2,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import html2canvas from "html2canvas";
-import { getOutputs, getCapoText } from "../utils/outputs";
+import { getOutputs } from "../utils/outputs";
 import { getSetList } from "../utils/setlists";
 import ChordSheetJS from "chordsheetjs";
-import { Key } from "chordsheetjs";
 import { Guitar, PrinterIcon } from "lucide-react";
 import { supabase } from "../supabaseClient";
 import { Toaster, toast } from 'react-hot-toast';
@@ -95,17 +94,14 @@ const SetListLyricsView = () => {
         }
     }, [outputs, id]);
 
-    const renderChordPro = (chordProContent, originalKey, targetKey, capo) => {
+    const renderChordPro = (chordProContent) => {
         try {
             if (chordProContent) {
                 const parser = new ChordSheetJS.ChordProParser();
-                const distance = Key.distance(originalKey, targetKey);
                 chordProContent = chordProContent.replaceAll('{ci:', '{c:');
                 const song = parser.parse(chordProContent);
-                const transposedSong = song.transpose(distance);
-                const changedTitleSong = transposedSong.changeMetadata('title', capo !== 0 ? `${transposedSong.title} (Capo on ${getCapoText(capo)})` : transposedSong.title);
                 const formatter = new ChordSheetJS.HtmlTableFormatter();
-                return formatter.format(changedTitleSong);
+                return formatter.format(song);
             }
             return '';
         } catch (error) {

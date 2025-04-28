@@ -1,7 +1,6 @@
-/// <reference types="https://deno.land/x/deno_types/mod.d.ts" />
-
 import { serve } from 'https://deno.land/std@0.221.0/http/server.ts'
-import { createClient, SupabaseClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 interface CorsHeaders {
   [key: string]: string
@@ -33,7 +32,8 @@ serve(async (req: Request) => {
   try {
     const supabaseClient: SupabaseClient = createClient(
       supabaseUrl ?? '',
-      supabaseServiceRoleKey ?? ''
+      supabaseServiceRoleKey ?? '',
+      {}
     )
 
     const supabase2: SupabaseClient = createClient(
@@ -91,7 +91,7 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        data
+        profileCreated
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     )

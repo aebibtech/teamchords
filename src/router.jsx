@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 import NoSidebar from "./components/NoSidebar";
 import InviteUser from "./components/InviteUser";
 import UpdatePassword from "./pages/UpdatePassword";
+import SetListLyricsView from "./pages/SetListLyricsView";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
   {
     path: "/setlists/share/:id",
     element: <SetListView />,
+  },
+  {
+    path: "/setlists/lyrics/:id",
+    element: <SetListLyricsView />,
   },
   {
     path: "/onboard",

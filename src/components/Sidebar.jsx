@@ -2,6 +2,7 @@ import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import MobileSidebar from "./MobileSidebar";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`${ isOpen ? "w-64" : "w-20" } bg-gray-700 text-white h-screen flex flex-col p-4 transition-all duration-300 ease-in-out`}>
+    <>
+      <div className={`${ isOpen ? "w-64" : "w-20" } hidden md:flex bg-gray-700 text-white h-screen flex-col p-4 transition-all duration-300 ease-in-out`}>
         <button
             className="p-2 rounded-md hover:bg-gray-500"
             onClick={handleSidebarToggle}
@@ -49,7 +51,9 @@ const Sidebar = () => {
                 <NavItem onClick={handleSignOut} icon={<Power size={24} />} label="Sign out" isOpen={isOpen} />
             </div>
         </nav>
-    </div>
+      </div>
+      <MobileSidebar />
+    </>
   );
 };
 

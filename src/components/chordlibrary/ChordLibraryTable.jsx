@@ -119,7 +119,7 @@ const ChordLibraryTable = ({ data, pageIndex, setPageIndex, totalCount, pageSize
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center bg-white border-t sticky bottom-0 p-3">
+      <div className="flex justify-center items-center bg-white border-t sticky bottom-10 md:bottom-0 p-3">
         <button
           className="px-4 py-2 border rounded disabled:opacity-50"
           onClick={() => setPageIndex(pageIndex - 1)}

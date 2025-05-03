@@ -1,4 +1,5 @@
 import Sidebar from "./Sidebar";
+import MobileSidebar from "./MobileSidebar";
 
 export default function SidebarLayout({ children }) {
   return (

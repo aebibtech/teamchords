@@ -111,8 +111,16 @@ const ChordProSheet = () => {
                     ))}
                 </select>
             </div>
+            <button 
+                onClick={handleSave} 
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center justify-center gap-2 disabled:opacity-50 mb-4 w-full sm:w-1/4 md:w-[128px]" 
+                disabled={!title || !artist || !key || !content || isSaving}
+            >
+                <Save size={16} /> 
+                Save
+            </button>
             <a className="text-blue-500 block mb-2 hover:underline" href={chordProGuideURL} target="_blank">ChordPro Syntax Guide</a>
-            <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[64vh]">
+            <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[64vh] mb-20 md:mb-0">
                 <div className="flex-1 min-h-[240px] h-auto lg:h-[64vh] border rounded overflow-hidden">
                     <Editor 
                         height="64vh"
@@ -127,14 +135,6 @@ const ChordProSheet = () => {
                     dangerouslySetInnerHTML={{ __html: renderChordPro(content) }}
                 />
             </div>
-            <button 
-                onClick={handleSave} 
-                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" 
-                disabled={!title || !artist || !key || !content || isSaving}
-            >
-                <Save size={16} /> 
-                Save
-            </button>
         </>
     );
 };

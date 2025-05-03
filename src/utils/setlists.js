@@ -4,7 +4,8 @@ async function getSetLists(orgId) {
     const { data, error } = await supabase
     .from("setlists")
     .select('*')
-    .eq("orgId", orgId);
+    .eq("orgId", orgId)
+    .order("created_at", { ascending: false });
 
     if (error) {
         console.error("Error fetching set lists:", error);

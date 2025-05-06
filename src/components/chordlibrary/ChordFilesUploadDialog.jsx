@@ -2,13 +2,13 @@ import { useState, useRef } from "react";
 import { X } from "lucide-react";
 import ChordSheetJS from "chordsheetjs";
 import { createChordsheet } from "../../utils/chordsheets";
-import { UserProfile } from "../../context/ProfileContext";
+import { useProfileStore } from "../../store/useProfileStore";
 
 const ChordFilesUploadDialog = ({ isOpen, close }) => {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const inputRef = useRef(null);
-  const { profile } = UserProfile();
+  const { profile } = useProfileStore();
 
   const handleFileChange = (e) => {
     setFiles(e.target.files);
@@ -21,7 +21,7 @@ const ChordFilesUploadDialog = ({ isOpen, close }) => {
       reader.onload = async () => {
         const parser = new ChordSheetJS.ChordProParser();
         const chordsheet = parser.parse(reader.result);
-        await createChordsheet({ title: chordsheet.title || '', artist: chordsheet.artist || 'Various', key: chordsheet.key || 'C', content: reader.result, orgId: profile.orgId });
+        await createChordsheet({ title: chordsheet.title || 'Untitled', artist: chordsheet.artist || 'Various', key: chordsheet.key || 'C', content: reader.result, orgId: profile.orgId });
       }
       reader.readAsText(file, "utf-8");
     }

@@ -1,12 +1,12 @@
-import { UserAuth } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { createProfile, createOrganization } from "../utils/common";
-import { UserProfile } from "../context/ProfileContext";
+import { useProfileStore } from "../store/useProfileStore";
 
 const Onboarding = () => {
-  const { session } = UserAuth();
-  const { profile, setUserProfile } = UserProfile();
+  const { session } = useAuthStore();
+  const { profile, setUserProfile } = useProfileStore();
   const navigate = useNavigate();
   const [orgName, setOrgName] = useState("");
   const inputRef = useRef(null);
@@ -19,7 +19,6 @@ const Onboarding = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(orgName);
     const newOrg = {
       name: orgName
     }

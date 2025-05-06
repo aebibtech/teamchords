@@ -1,14 +1,14 @@
-import { UserAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import SidebarLayout from "./SidebarLayout";
-import { UserProfile } from "../context/ProfileContext";
+import { useProfileStore } from "../store/useProfileStore";
+import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getProfile } from "../utils/common";
 
 const PrivateRoute = ({ children }) => {
-  const { session } = UserAuth();
-  const { profile, setUserProfile } = UserProfile();
+  const { session } = useAuthStore();
+  const { profile, setUserProfile } = useProfileStore();
   const navigate = useNavigate();
 
   const fetchProfile = async (data) => {

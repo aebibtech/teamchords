@@ -1,10 +1,10 @@
-import { UserAuth } from "../context/AuthContext";
-import { UserProfile } from "../context/ProfileContext";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
+import { useProfileStore } from "../store/useProfileStore";
 
 const NoSidebar = ({ children }) => {
-    const { signOut } = UserAuth();
-    const { setUserProfile } = UserProfile();
+    const { signOut } = useAuthStore();
+    const { setUserProfile } = useProfileStore();
     const navigate = useNavigate();
 
     const handleSignOut = async (e) => {

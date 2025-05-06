@@ -1,13 +1,15 @@
-import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
+import { User, Power, Library, BookAudio } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
 import MobileSidebar from "./MobileSidebar";
 import MainLogo from "./MainLogo";
+import { useAuthStore } from "../store/useAuthStore";
+import { useProfileStore } from "../store/useProfileStore";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { signOut, session } = UserAuth();
+  const { signOut, session, setSession } = useAuthStore();
+  const { setUserProfile } = useProfileStore();
   const navigate = useNavigate();
 
   const handleSignOut = async (e) => {
@@ -15,6 +17,8 @@ const Sidebar = () => {
 
     try {
       await signOut();
+      setSession(null);
+      setUserProfile(null);
       navigate("/signin");
     } catch (err) {
       console.error(err);

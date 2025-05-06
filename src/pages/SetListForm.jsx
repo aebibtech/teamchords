@@ -7,8 +7,8 @@ import { Plus, X, Trash, Edit, Link2, Eye } from "lucide-react";
 import { createOutputs, deleteOutputs, getCapoText } from "../utils/outputs";
 import { handleCopyLink, handlePreview } from "../utils/setlists";
 import { v4 as uuidv4 } from 'uuid';
-import { useSongSelection } from "../context/SongSelectionContext";
-import { UserProfile } from "../context/ProfileContext";
+import { useSongSelectionStore } from "../store/useSongSelectionStore";
+import { useProfileStore } from "../store/useProfileStore";
 import { defaultFretValue, defaultKeyValue, defaultOutputValue, defaultSelectedSongValue, frets, keys } from "../constants";
 import { DndContext, closestCenter, useSensors, useSensor, PointerSensor } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
@@ -18,7 +18,7 @@ import Spinner from "../components/Spinner";
 import Select from "react-select";
 
 const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
-    const songStuff = useSongSelection();
+    const songStuff = useSongSelectionStore();
     const selectSongOptions = [defaultSelectedSongValue].concat(sheets.map((sheet) => ({ value: sheet.id, label: `${sheet.title} - ${sheet.artist} - ${sheet.key}`})));
     const selectKeyOptions = [defaultKeyValue].concat(keys.map(k => ({ value: k, label: k })));
     const selectCapoOptions = [defaultFretValue].concat(frets.map(f => ({ value: f, label: getCapoText(f) })));
@@ -50,13 +50,13 @@ const SongSelectionDialog = ({ sheets, onAdd, isOpen, onClose }) => {
             </h3>
 
             <label htmlFor="song">Song</label>
-            <Select value={songStuff.selectedSong.song !== "" ? selectSongOptions.find((v) => v.value === songStuff.selectedSong.song) : defaultSelectedSongValue} options={selectSongOptions} isSearchable id="song" onChange={(e) => songStuff.setSelectedSong((p) => ({...p, song: e.value}))} />
+            <Select value={songStuff.selectedSong.song !== "" ? selectSongOptions.find((v) => v.value === songStuff.selectedSong.song) : defaultSelectedSongValue} options={selectSongOptions} isSearchable id="song" onChange={(e) => songStuff.setSelectedSong({ ...songStuff.selectedSong, song: e.value })} />
 
             <label className="mt-4 block" htmlFor="key">Key</label>
-            <Select onChange={(e) => songStuff.setSelectedSong((p) => ({...p, targetKey: e.value}))} value={songStuff.selectedSong.targetKey !== "" ? selectKeyOptions.find(k => k.value === songStuff.selectedSong.targetKey) : defaultKeyValue} options={selectKeyOptions} isSearchable id="key" />
+            <Select onChange={(e) => songStuff.setSelectedSong({ ...songStuff.selectedSong, targetKey: e.value })} value={songStuff.selectedSong.targetKey !== "" ? selectKeyOptions.find(k => k.value === songStuff.selectedSong.targetKey) : defaultKeyValue} options={selectKeyOptions} isSearchable id="key" />
 
             <label className="mt-4 block" htmlFor="capo">Capo</label>
-            <Select onChange={(e) => songStuff.setSelectedSong((p) => ({...p, capo: Number(e.value)}))} value={songStuff.selectedSong.song !== "" ? selectCapoOptions.find(f => f.value === songStuff.selectedSong.capo) : defaultFretValue} options={selectCapoOptions} isSearchable id="capo" />
+            <Select onChange={(e) => songStuff.setSelectedSong({ ...songStuff.selectedSong, capo: Number(e.value) })} value={songStuff.selectedSong.song !== "" ? selectCapoOptions.find(f => f.value === songStuff.selectedSong.capo) : defaultFretValue} options={selectCapoOptions} isSearchable id="capo" />
             
             <div className="mt-4 flex justify-end gap-2">
                 <button className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-4 flex items-center gap-2 disabled:opacity-50" onClick={songStuff.isEdit ? handleEdit : handleAdd} disabled={!songStuff.selectedSong.song || !songStuff.selectedSong.targetKey}>
@@ -110,14 +110,14 @@ const SortableRow = ({ output, index, sheets, handleDeleteSong, openEditDialog }
 };
 
 const SetListForm = () => {
-    const { profile } = UserProfile();
+    const { profile } = useProfileStore();
     const { id } = useParams();
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [sheets, setSheets] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [outputs, setOutputs] = useState([]);
-    const songStuff = useSongSelection();
+    const songStuff = useSongSelectionStore();
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     

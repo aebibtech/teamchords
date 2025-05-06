@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
 import MainLogo from "../components/MainLogo";
 
 const Signup = () => {
@@ -9,7 +9,7 @@ const Signup = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { signUpNewUser } = UserAuth();
+  const { signUpNewUser } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {

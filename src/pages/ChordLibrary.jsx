@@ -4,7 +4,7 @@ import ChordLibraryTable from "../components/chordlibrary/ChordLibraryTable";
 import ChordFilesUploadDialog from "../components/chordlibrary/ChordFilesUploadDialog";
 import { Link } from "react-router-dom";
 import { MoreVertical, Plus, Upload, Search } from "lucide-react";
-import { UserProfile } from "../context/ProfileContext";
+import { useProfileStore } from "../store/useProfileStore";
 import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
 import Modal from "../components/Modal";
@@ -17,7 +17,7 @@ const ChordLibrary = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const { profile } = UserProfile();
+  const { profile } = useProfileStore();
   const debounceTimeout = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);

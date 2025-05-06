@@ -1,10 +1,9 @@
-import { User, Power, Library, BookAudio, Guitar } from "lucide-react";
-import { useState } from "react";
+import { User, Power, Library, BookAudio } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
 
 const MobileSidebar = () => {
-  const { signOut, session } = UserAuth();
+  const { signOut } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSignOut = async (e) => {

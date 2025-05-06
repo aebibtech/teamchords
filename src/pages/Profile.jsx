@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { UserProfile } from "../context/ProfileContext";
-import { UserAuth } from "../context/AuthContext";
+import { useAuthStore } from "../store/useAuthStore";
+import { useProfileStore } from "../store/useProfileStore";
 import Modal from "../components/Modal";
 import UpdatePassword from "./UpdatePassword";
 import InviteUser from "../components/InviteUser";
 
 const Profile = () => {
-    const { session } = UserAuth();
-    const { profile } = UserProfile();
+    const { session } = useAuthStore();
+    const { profile } = useProfileStore();
     const [showModal, setShowModal] = useState(false);
     const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
 

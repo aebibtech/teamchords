@@ -15,7 +15,6 @@ async function getOutputs(setListId) {
 }
 
 async function createOutputs(outputs) {
-    console.log(outputs);    
     const { data, error } = await supabase
     .from("outputs")
     .insert(outputs)
@@ -26,7 +25,6 @@ async function createOutputs(outputs) {
         return null;
     }
 
-    console.log("Output created:", data);
     return data;
 }
 

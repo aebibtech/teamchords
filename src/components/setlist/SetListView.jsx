@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { getCapoText } from "../utils/outputs";
 import ChordSheetJS from "chordsheetjs";
 import { Key } from "chordsheetjs";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserProfile } from "../context/ProfileContext";
+import { useProfileStore } from "../store/useProfileStore";
 import { Link } from "react-router-dom";
 import { Plus } from 'lucide-react'
 import { getSetLists } from "../utils/setlists";
@@ -8,7 +8,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
 
 const SetList = () => {
-  const { profile } = UserProfile();
+  const { profile } = useProfileStore();
   const [setLists, setSetLists] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

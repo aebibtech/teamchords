@@ -3,14 +3,14 @@ import { getChordsheet, createChordsheet, updateChordsheet } from "../utils/chor
 import { useState, useEffect } from "react";
 import ChordSheetJS from "chordsheetjs";
 import { Save } from "lucide-react";
-import { UserProfile } from "../context/ProfileContext";
+import { useProfileStore } from "../store/useProfileStore";
 import Editor from "@monaco-editor/react";
 import { defaultContent, defaultKey, chordProGuideURL, keys } from "../constants";
 import { Toaster, toast } from 'react-hot-toast';
 import Spinner from "../components/Spinner";
 
 const ChordProSheet = () => {
-    const { profile } = UserProfile();
+    const { profile } = useProfileStore();
     const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState("");

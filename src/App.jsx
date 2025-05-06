@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Guitar } from "lucide-react";
-import { UserAuth } from "./context/AuthContext";
+import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import MainLogo from "./components/MainLogo";
 
 function App() {
-  const { session } = UserAuth();
+  const { session } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {

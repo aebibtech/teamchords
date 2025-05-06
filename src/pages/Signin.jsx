@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
-import { UserProfile } from "../context/ProfileContext";
+import { useAuthStore } from "../store/useAuthStore";
+import { useProfileStore } from "../store/useProfileStore";
 import { getProfile } from "../utils/common";
 import MainLogo from "../components/MainLogo";
 
@@ -11,8 +11,8 @@ const Signin = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { signInUser, session } = UserAuth();
-  const { setUserProfile } = UserProfile();
+  const { signInUser, session } = useAuthStore();
+  const { setUserProfile } = useProfileStore();
   const navigate = useNavigate();
 
   const fetchProfile = async (data) => {

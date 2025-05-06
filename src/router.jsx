@@ -9,12 +9,12 @@ import ChordProSheet from "./pages/ChordProSheet";
 import SetListForm from "./pages/SetListForm";
 import SetListView from "./pages/SetListView";
 import Onboarding from "./pages/Onboarding";
-import { SongSelectionContextProvider } from "./context/SongSelectionContext";
 import Profile from "./pages/Profile";
 import NoSidebar from "./components/NoSidebar";
 import InviteUser from "./components/InviteUser";
 import UpdatePassword from "./pages/UpdatePassword";
 import SetListLyricsView from "./pages/SetListLyricsView";
+import AuthCallback from "./pages/AuthCallback";
 
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -48,9 +48,7 @@ export const router = createBrowserRouter([
     path: "/setlists/:id",
     element: (
       <PrivateRoute>
-        <SongSelectionContextProvider>
-          <SetListForm />
-        </SongSelectionContextProvider>
+        <SetListForm />
       </PrivateRoute>
     ),
   },
@@ -86,4 +84,8 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  {
+    path: "/callback",
+    element: <AuthCallback />
+  }
 ]);

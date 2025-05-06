@@ -1,6 +1,5 @@
 import { createPortal } from 'react-dom';
 import { useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
 
 export default function Modal({ children, onClose }) {
   const dialogRef = useRef();

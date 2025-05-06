@@ -44,7 +44,6 @@ async function createSetList(setlist) {
         return null;
     }
 
-    console.log("Set list created:", data);
     return data;
 }
 

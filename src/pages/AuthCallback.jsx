@@ -19,7 +19,6 @@ const AuthCallback = () => {
         if (error) {
           console.error('Error setting session:', error.message)
         } else {
-          console.log('Session set!', data)
           navigate('/update-password')
         }
       })

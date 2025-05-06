@@ -3,6 +3,7 @@ import { Guitar } from "lucide-react";
 import { UserAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import MainLogo from "./components/MainLogo";
 
 function App() {
   const { session } = UserAuth();
@@ -25,7 +26,7 @@ function App() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full flex justify-between p-3 sm:p-4 bg-gray-700 text-white shadow-md z-10">
         <h1 className="flex items-center text-lg sm:text-xl">
-          <Guitar size={28} className="mr-2" /> Team Chords
+          <MainLogo size={28} className="mr-2" /> Team Chords
         </h1>
         <div>
           <Link

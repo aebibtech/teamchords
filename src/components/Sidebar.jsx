@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import MobileSidebar from "./MobileSidebar";
+import MainLogo from "./MainLogo";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +38,7 @@ const Sidebar = () => {
             onClick={handleSidebarToggle}
             title="Toggle Sidebar"
         >
-            {isOpen ? <span className="flex items-center space-x-4 p-2 cursor-pointer"><Guitar size={24} /> <span className="font-bold">Team Chords</span></span> : <Guitar size={24} />}
+            {isOpen ? <span className="flex items-center space-x-4 p-2 cursor-pointer"><MainLogo size={32} /> <span className="font-bold">Team Chords</span></span> : <MainLogo size={32} />}
         </button>
         <hr className="my-4" />
         <nav className="flex flex-col justify-between h-full">

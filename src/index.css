@@ -25,6 +25,10 @@ td.comment {
     display: none;
 }
 
+.sheet h1 {
+    margin-bottom: 1rem;
+}
+
 @media print {
     pre {
         column-count: 2;   /* Creates two columns */

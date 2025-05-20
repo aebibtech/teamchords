@@ -36,7 +36,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
         {children}
       </div>
     </dialog>,
-    document.getElementById('modal-root')
+    document.getElementById('modal-root') as HTMLElement
   );
 }
 \nexport default Modal;

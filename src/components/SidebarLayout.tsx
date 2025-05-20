@@ -1,5 +1,5 @@
 import Sidebar from "./Sidebar";
-import type { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface SidebarLayoutProps {
   children: ReactNode;

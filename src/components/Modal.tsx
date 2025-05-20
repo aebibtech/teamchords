@@ -12,10 +12,8 @@ export default function Modal({ children, onClose }: ModalProps) {
 
   useEffect(() => {
     if (!dialogRef.current) return;
-
     // Using native dialog API for accessibility
     dialogRef.current.showModal();
-
     return () => {
       if (dialogRef.current) {
         dialogRef.current.close();

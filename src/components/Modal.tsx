@@ -39,4 +39,4 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
     document.getElementById('modal-root') as HTMLElement
   );
 }
-\nexport default Modal;
+export default Modal;

@@ -1,18 +1,18 @@
 import { User, Power, Library, BookAudio } from "lucide-react";
-import { useState } from "react";
+import { useState, type MouseEvent, type ReactNode, type FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MobileSidebar from "./MobileSidebar";
 import MainLogo from "./MainLogo";
 import { useAuthStore } from "../store/useAuthStore";
 import { useProfileStore } from "../store/useProfileStore";
 
-const Sidebar = () => {
+const Sidebar: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { signOut, session, setSession } = useAuthStore();
   const { setUserProfile } = useProfileStore();
   const navigate = useNavigate();
 
-  const handleSignOut = async (e) => {
+  const handleSignOut = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     try {
@@ -62,7 +62,15 @@ const Sidebar = () => {
   );
 };
 
-function NavItem({ to, icon, label, isOpen, onClick }) {
+interface NavItemProps {
+  to?: string;
+  icon: ReactNode;
+  label: React.ReactNode;
+  isOpen?: boolean;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+}
+
+function NavItem({ to, icon, label, isOpen, onClick }: NavItemProps) {
     if (to) {
       return (
         <Link

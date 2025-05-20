@@ -1,12 +1,13 @@
 import { User, Power, Library, BookAudio } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
+import type { FC, MouseEvent, ReactNode } from 'react';
 
-const MobileSidebar = () => {
+const MobileSidebar: FC = () => {
   const { signOut } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleSignOut = async (e) => {
+  const handleSignOut = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     try {
@@ -27,7 +28,14 @@ const MobileSidebar = () => {
   );
 };
 
-function MobileNavItem({ to, icon, label, onClick }) {
+interface MobileNavItemProps {
+  to?: string;
+  icon: ReactNode;
+  label: string;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+}
+
+function MobileNavItem({ to, icon, label, onClick }: MobileNavItemProps) {
   if (to) {
     return (
       <Link

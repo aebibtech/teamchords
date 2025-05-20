@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { supabase } from '../supabaseClient';
 
 export default function InviteUser() {
@@ -6,7 +6,7 @@ export default function InviteUser() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', isError: false });
 
-  const handleInvite = async (e) => {
+  const handleInvite = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ text: '', isError: false });

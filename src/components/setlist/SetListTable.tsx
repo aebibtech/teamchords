@@ -1,23 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, type FC, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { deleteSetList, handlePreview, handleCopyLink } from "../../utils/setlists";
 import { Eye, Trash, Link2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
-const SetListTable = ({ data, onRefresh }) => {
+interface SetList {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
+interface SetListTableProps {
+  data: SetList[];
+  onRefresh: () => void;
+}
+
+const SetListTable: FC<SetListTableProps> = ({ data, onRefresh }) => {
   const navigate = useNavigate();
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleCopyLinkWrapper = async (id, e) => {
+  const handleCopyLinkWrapper = async (id: string, e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     await handleCopyLink(id);
     toast.success('Link copied to clipboard!');
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     setIsDeleting(true);
     await deleteSetList(id);
     setIsDeleting(false);
@@ -26,12 +37,12 @@ const SetListTable = ({ data, onRefresh }) => {
     onRefresh();
   };
 
-  const handlePreviewWrapper = async (id, e) => {
+  const handlePreviewWrapper = async (id: string, e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     await handlePreview(id);
   };
 
-  const openDeleteDialog = (id, name, e) => {
+  const openDeleteDialog = (id: string, name: string, e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setDeleteId(id);
     setDeleteName(name);

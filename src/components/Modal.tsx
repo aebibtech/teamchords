@@ -1,8 +1,12 @@
 import { createPortal } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type FC, type ReactNode, type MouseEvent } from 'react';
+interface ModalProps {
+  children: ReactNode;
+  onClose: () => void;
+}
 
-export default function Modal({ children, onClose }) {
-  const dialogRef = useRef();
+const Modal: FC<ModalProps> = ({ children, onClose }) => {
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   useEffect(() => {
     if (!dialogRef.current) return;
@@ -35,3 +39,4 @@ export default function Modal({ children, onClose }) {
     document.getElementById('modal-root')
   );
 }
+\nexport default Modal;

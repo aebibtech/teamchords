@@ -1,7 +1,22 @@
-import React from "react";
+import React, { type FC } from "react";
 import { Link } from "react-router-dom";
 
-const ChordLibraryTable = ({ data, pageIndex, setPageIndex, totalCount, pageSize }) => {
+interface Chord {
+  id: string;
+  title: string;
+  artist?: string;
+  key?: string;
+}
+
+interface ChordLibraryTableProps {
+  data: Chord[];
+  pageIndex: number;
+  setPageIndex: (index: number) => void;
+  totalCount: number;
+  pageSize: number;
+}
+
+const ChordLibraryTable: FC<ChordLibraryTableProps> = ({ data, pageIndex, setPageIndex, totalCount, pageSize }) => {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   // Render page numbers (max 5 at a time)

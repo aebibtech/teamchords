@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { useProfileStore } from "../store/useProfileStore";
+import type { FC, ReactNode, MouseEvent } from 'react';
 
-const NoSidebar = ({ children }) => {
+interface NoSidebarProps {
+  children: ReactNode;
+}
+
+const NoSidebar: FC<NoSidebarProps> = ({ children }) => {
     const { signOut } = useAuthStore();
     const { setUserProfile } = useProfileStore();
     const navigate = useNavigate();
 
-    const handleSignOut = async (e) => {
+    const handleSignOut = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
     
         try {

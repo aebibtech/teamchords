@@ -1,17 +1,22 @@
-import { useState, useRef } from "react";
+import { useState, useRef, type FC, type ReactNode, type ChangeEvent } from "react";
 import { X } from "lucide-react";
 import ChordSheetJS from "chordsheetjs";
 import { createChordsheet } from "../../utils/chordsheets";
 import { useProfileStore } from "../../store/useProfileStore";
 
-const ChordFilesUploadDialog = ({ isOpen, close }) => {
-  const [files, setFiles] = useState([]);
+interface ChordFilesUploadDialogProps {
+  isOpen: boolean;
+  close: () => void;
+}
+
+const ChordFilesUploadDialog: FC<ChordFilesUploadDialogProps> = ({ isOpen, close }) => {
+  const [files, setFiles] = useState<FileList | []>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { profile } = useProfileStore();
 
-  const handleFileChange = (e) => {
-    setFiles(e.target.files);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) setFiles(e.target.files);
   }
 
   const handleUpload = async () => {
@@ -20,8 +25,9 @@ const ChordFilesUploadDialog = ({ isOpen, close }) => {
       const reader = new FileReader();
       reader.onload = async () => {
         const parser = new ChordSheetJS.ChordProParser();
-        const chordsheet = parser.parse(reader.result);
-        await createChordsheet({ title: chordsheet.title || 'Untitled', artist: chordsheet.artist || 'Various', key: chordsheet.key || 'C', content: reader.result, orgId: profile.orgId });
+        const result = reader.result as string;
+        const chordsheet = parser.parse(result);
+        await createChordsheet({ title: chordsheet.title || 'Untitled', artist: chordsheet.artist || 'Various', key: chordsheet.key || 'C', content: result, orgId: profile.orgId });
       }
       reader.readAsText(file, "utf-8");
     }

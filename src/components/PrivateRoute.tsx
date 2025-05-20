@@ -3,10 +3,14 @@ import SidebarLayout from "./SidebarLayout";
 import { useProfileStore } from "../store/useProfileStore";
 import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import { getProfile } from "../utils/common";
 
-const PrivateRoute = ({ children }) => {
+interface PrivateRouteProps {
+  children: ReactNode;
+}
+
+const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const { session } = useAuthStore();
   const { profile, setUserProfile } = useProfileStore();
   const navigate = useNavigate();

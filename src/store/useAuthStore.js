@@ -6,6 +6,7 @@ const getSessionFromStorage = () => {
   return session ? JSON.parse(session) : null;
 };
 
+// eslint-disable-next-line no-unused-vars
 export const useAuthStore = create((set, get) => ({
   session: getSessionFromStorage(),
   setSession: (session) => {
@@ -29,6 +30,22 @@ export const useAuthStore = create((set, get) => ({
       if (error) return { success: false, error: error.message };
       return { success: true, data };
     } catch (err) {
+      console.error(err);
+      return { success: false, error: 'An unexpected error occurred. Please try again.' };
+    }
+  },
+  signInWithProvider: async (provider) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin + "/auth/callback",
+        },
+      });
+      if (error) return { success: false, error: error.message };
+      return { success: true, data };
+    } catch (err) {
+      console.error(err);
       return { success: false, error: 'An unexpected error occurred. Please try again.' };
     }
   },
